@@ -22,6 +22,7 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
   14151: "_", // 瓦雷莎 A
+  14174: "$[K3001],$[C205],$[C204]$[C207]", // 伊涅夫 P
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
   15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
   15153: "$[C115153],$[C115154],$[C115155],$[C115156]", // 伊法 Q
@@ -58,6 +59,8 @@ export const SHOWN_KEYWORDS = [
   1013, // 「焚尽的炽炎魔女」
   7, // 距离我方出战角色最近的角色
   66, // 冒险
+  67, // 元素幻变
+  3001, // 月感电
 ];
 
 export const COST_READONLY_ENTITIES = [
@@ -161,6 +164,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_CARD_SUMMON: "召唤物",
     GCG_CARD_ASSIST: "支援牌",
     GCG_CARD_MODIFY: "装备牌",
+    GCG_CARD_ATTACHMENT: "附着效果状态",
     GCG_TAG_ELEMENT_CRYO: "冰元素",
     GCG_TAG_ELEMENT_HYDRO: "水元素",
     GCG_TAG_ELEMENT_PYRO: "火元素",
@@ -174,6 +178,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_SUMERU: "须弥",
     GCG_TAG_NATION_FONTAINE: "枫丹",
     GCG_TAG_NATION_NATLAN: "纳塔",
+    GCG_TAG_NATION_NODKRAI: "挪德卡莱",
     GCG_TAG_NATION_SNEZHNAYA: "至冬",
     GCG_TAG_NATION_COSMIC_CALAMITY: "寰宇劫灭",
     GCG_TAG_CAMP_EREMITE: "镀金旅团",
@@ -199,6 +204,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_PLACE: "场地",
     GCG_TAG_ALLY: "伙伴",
     GCG_TAG_ITEM: "道具",
+    GCG_TAG_CARD_BLESSING: "元素幻变",
     GCG_TAG_PREPARE_SKILL: "准备技能",
     GCG_TAG_NYX_STATE: "夜魂加持",
     GCG_TAG_SHEILD: "护盾",
@@ -224,6 +230,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_CARD_SUMMON: "Summon",
     GCG_CARD_ASSIST: "Support Card",
     GCG_CARD_MODIFY: "Equipment Card",
+    GCG_CARD_ATTACHMENT: "Attachment Status",
     GCG_TAG_ELEMENT_CRYO: "Cryo",
     GCG_TAG_ELEMENT_HYDRO: "Hydro",
     GCG_TAG_ELEMENT_PYRO: "Pyro",
@@ -237,6 +244,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_SUMERU: "Sumeru",
     GCG_TAG_NATION_FONTAINE: "Fontaine",
     GCG_TAG_NATION_NATLAN: "Natlan",
+    GCG_TAG_NATION_NODKRAI: "NodKrai",
     GCG_TAG_NATION_SNEZHNAYA: "Snezhnaya",
     GCG_TAG_NATION_COSMIC_CALAMITY: "Cosmic Calamity",
     GCG_TAG_CAMP_EREMITE: "The Eremites",
@@ -262,6 +270,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_PLACE: "Location",
     GCG_TAG_ALLY: "Companion",
     GCG_TAG_ITEM: "Item",
+    GCG_TAG_CARD_BLESSING: "Elemental Blessing",
     GCG_TAG_PREPARE_SKILL: "Prepare Skill",
     GCG_TAG_NYX_STATE: "Nightsoul's Blessing State",
     GCG_TAG_SHEILD: "Sheild",
@@ -296,6 +305,7 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_NATION_SUMERU: "Faction_Sumeru",
   GCG_TAG_NATION_FONTAINE: "Faction_Fontaine",
   GCG_TAG_NATION_NATLAN: "Faction_Natlan",
+  GCG_TAG_NATION_NODKRAI: "Faction_NodKrai",
   GCG_TAG_NATION_SNEZHNAYA: "Faction_Snezhnaya",
   GCG_TAG_NATION_COSMIC_CALAMITY: "Faction_CosmicCalamity",
   GCG_TAG_CAMP_EREMITE: "Faction_Eremite",
@@ -321,6 +331,7 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_PLACE: "Card_Location",
   GCG_TAG_ALLY: "Card_Ally",
   GCG_TAG_ITEM: "Card_Item",
+  GCG_TAG_CARD_BLESSING: "Card_Blessing",
   GCG_TAG_SLOWLY: "Card_CombatAction",
   GCG_TAG_NATION_SIMULANKA: "Card_Simulanka", // ###非官方###
   GCG_TAG_ADVENTURE_PLACE: "Card_Adventure", // ###非官方###

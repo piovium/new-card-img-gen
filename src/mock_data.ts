@@ -2,6 +2,7 @@ import type {
   NewCharacterData,
   NewEntityData,
   NewActionCardData,
+  NewKeywordData,
 } from "./components/form/Forms";
 
 export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
@@ -107,3 +108,5 @@ export const MOCK_NEW_ENTITIES: NewEntityData[] = [
       "http://106.52.187.96:8013/images/custom/UI_Gcg_CardFace_Summon_Guyutongxue.png",
   },
 ];
+
+export const MOCK_NEW_KEYWORDS: NewKeywordData[] = [];

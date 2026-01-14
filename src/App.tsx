@@ -21,6 +21,7 @@ import {
   MOCK_NEW_ACTION_CARDS,
   MOCK_NEW_CHARACTERS,
   MOCK_NEW_ENTITIES,
+  MOCK_NEW_KEYWORDS,
 } from "./mock_data";
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
 import { applyOverride } from "./override";
@@ -71,7 +72,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     characters: MOCK_NEW_CHARACTERS,
     actionCards: MOCK_NEW_ACTION_CARDS,
     entities: MOCK_NEW_ENTITIES,
-    keywords: [],
+    keywords: MOCK_NEW_KEYWORDS,
   },
   adjustments: [],
 };
