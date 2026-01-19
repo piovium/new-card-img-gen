@@ -61,6 +61,7 @@ export const SHOWN_KEYWORDS = [
   66, // 冒险
   67, // 元素幻变
   3001, // 月感电
+  3002, // 当前元素骰费用
 ];
 
 export const COST_READONLY_ENTITIES = [
