@@ -132,7 +132,10 @@ export const App = () => {
     if (import.meta.env.DEV) {
       console.log(newFormValue);
     }
-    setPersistedFormValue(newFormValue);
+    setPersistedFormValue({
+      ...newFormValue,
+      newItems: {},
+    });
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
     const prevLanguage = remoteFetched.language;
@@ -175,7 +178,7 @@ export const App = () => {
         description: "",
         targetList: [],
       });
-      for (const newCh of newFormValue.newItems.characters) {
+      for (const newCh of newFormValue.newItems.characters || []) {
         data.characters.push({
           ...newCh,
           tags: [newCh.elementTag, newCh.weaponTag, ...newCh.tags],
@@ -187,7 +190,7 @@ export const App = () => {
           icon: "",
         });
       }
-      for (const newEt of newFormValue.newItems.entities) {
+      for (const newEt of newFormValue.newItems.entities || []) {
         data.entities.push({
           ...newEt,
           skills: newEt.skills.map(skillMapper),
@@ -198,7 +201,7 @@ export const App = () => {
           remainAfterDie: false,
         });
       }
-      for (const newAc of newFormValue.newItems.actionCards) {
+      for (const newAc of newFormValue.newItems.actionCards || []) {
         data.actionCards.push({
           ...newAc,
           // we wont use these
@@ -208,6 +211,14 @@ export const App = () => {
           cardFace: "",
           targetList: [],
           relatedCharacterTags: [],
+        });
+      }
+      for (const newK of newFormValue.newItems.keywords || []) {
+        data.keywords.push({
+          ...newK,
+          // we wont use these
+          rawName: "",
+          description: "",
         });
       }
       setConfig({

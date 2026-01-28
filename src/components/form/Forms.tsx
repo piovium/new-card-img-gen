@@ -135,10 +135,10 @@ export interface FormValue {
     watermarkText: string;
   };
   newItems: {
-    characters: NewCharacterData[];
-    actionCards: NewActionCardData[];
-    entities: NewEntityData[];
-    keywords: NewKeywordData[];
+    characters?: NewCharacterData[];
+    actionCards?: NewActionCardData[];
+    entities?: NewEntityData[];
+    keywords?: NewKeywordData[];
   };
   adjustments: AdjustmentData[];
 }
