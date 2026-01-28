@@ -53,6 +53,13 @@ if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
   versionFromUrl = "latest";
 }
 
+const INITIAL_NEW_ITEMS: FormValue["newItems"] = {
+  characters: MOCK_NEW_CHARACTERS,
+  actionCards: MOCK_NEW_ACTION_CARDS,
+  entities: MOCK_NEW_ENTITIES,
+  keywords: MOCK_NEW_KEYWORDS,
+};
+
 const INITIAL_FORM_VALUE: FormValue = {
   general: {
     mode: "character",
@@ -68,12 +75,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     mirroredLayout: false,
     watermarkText: "",
   },
-  newItems: {
-    characters: MOCK_NEW_CHARACTERS,
-    actionCards: MOCK_NEW_ACTION_CARDS,
-    entities: MOCK_NEW_ENTITIES,
-    keywords: MOCK_NEW_KEYWORDS,
-  },
+  newItems: INITIAL_NEW_ITEMS,
   adjustments: [],
 };
 
@@ -89,6 +91,7 @@ const formValueFromUrl = {
     actionCardId: Number(search.get("action_card_id") || Number.NaN) || void 0,
     version: (versionFromUrl as Version) || void 0,
   }),
+  newItems: INITIAL_NEW_ITEMS,
 } as const;
 
 const [persistedFormValue, setPersistedFormValue] = makePersisted(
@@ -134,7 +137,12 @@ export const App = () => {
     }
     setPersistedFormValue({
       ...newFormValue,
-      newItems: {},
+      newItems: {
+        characters: [],
+        actionCards: [],
+        entities: [],
+        keywords: [],
+      },
     });
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
