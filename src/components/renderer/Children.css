@@ -90,6 +90,7 @@
   flex-grow: 1;
   flex-direction: column;
   position: relative;
+  margin-right: var(--margin-right, 0);
 }
 
 .keyword-title {
@@ -100,6 +101,7 @@
   font-size: 2.5rem;
   line-height: 1;
   color: #716a64;
+  flex-wrap: wrap;
 }
 
 .keyword-title .middot {

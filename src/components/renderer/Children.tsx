@@ -32,6 +32,9 @@ export const Children = (props: { children: ParsedChild[] }) => {
           const preparing = renderContext().prepareSkillToEntityMap.get(
             child.id,
           );
+          const costWidth = child.playCost
+            ? Math.min(child.playCost.length, 1)
+            : 0;
           return (
             <div class="keyword-box-wrapper">
               <div class="keyword-line" />
@@ -54,7 +57,10 @@ export const Children = (props: { children: ParsedChild[] }) => {
                   <Show when={!(child.cardFaceUrl || child.cardFace)}>
                     <KeywordIcon item={child} />
                   </Show>
-                  <div class="keyword-title-box">
+                  <div
+                    class="keyword-title-box"
+                    style={{ "--margin-right": `${costWidth * 5}rem` }}
+                  >
                     <div class="keyword-title">
                       <Text text={child.name} />
                     </div>
@@ -90,7 +96,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     }
                   />
                 </Show>
-                <div 
+                <div
                   class={`keyword-description`}
                   data-justify={["CHS", "CHT"].includes(language())}
                 >
