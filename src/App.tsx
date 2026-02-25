@@ -69,7 +69,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     version: "latest",
     authorName: "❤︎ From「雨酱牌」",
     authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
-    cardbackImage: "UI_Gcg_CardBack_Championship_11",
+    cardbackImage: "UI_Gcg_CardBack_NodKrai",
     displayId: true,
     displayStory: true,
     mirroredLayout: false,

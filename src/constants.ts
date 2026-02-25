@@ -70,6 +70,8 @@ export const SHOWN_KEYWORDS = [
 export const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
   333022, 333023, 333024, 333025, 333026, 300008, 300009, 111159, 13164,
+  302220, 302221, 302222, 302223, 302224, 302225, 302226, 302227, 302228,
+  302229, 302230, 302231
 ];
 
 export const CARD_NORMAL_FRAME = `${
@@ -462,7 +464,8 @@ export const DESCRIPTION_ICON_IMAGES = {
   3404: { tagIcon: "GCG_TAG_NATION_SUMERU" },
   3405: { tagIcon: "GCG_TAG_NATION_FONTAINE" },
   3406: { tagIcon: "GCG_TAG_NATION_NATLAN" },
-  3407: { tagIcon: "GCG_TAG_NATION_SNEZHNAYA" },
+  3407: { tagIcon: "GCG_TAG_NATION_NODKRAI" },
+  3408: { tagIcon: "GCG_TAG_NATION_SNEZHNAYA" },
   3501: { tagIcon: "GCG_TAG_CAMP_FATUI" },
   3502: { tagIcon: "GCG_TAG_CAMP_HILICHURL" },
   3503: { tagIcon: "GCG_TAG_CAMP_MONSTER" },
@@ -740,6 +743,22 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 303061, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 303062, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 303071, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 303072, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
+    }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -757,6 +776,14 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 331006, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 331007, // 幻变 修正一处图标错误 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
     }),
   ],
 };
