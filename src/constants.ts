@@ -45,6 +45,8 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
     "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215]", // 瑟琳
+  322033:
+    "$[K1050],$[C302229],$[C302230],$[C302231],$[C302220],$[C302221],$[C302222],$[C302223],$[C302224],$[C302225],$[C302226],$[C302227],$[C302228]", // 乐平波琳
   330012: "$[C300008],$[C300009]", // 沙中遗事
   331702: "_", // 草共鸣
   332016: "$[C303216],$[C303217],$[C303218],$[C303219]", // 愚人众的阴谋
@@ -57,6 +59,7 @@ export const CHILDREN_CONFIG: Record<number, string> = {
 export const SHOWN_KEYWORDS = [
   1012, // 汲取对应元素的力量
   1013, // 「焚尽的炽炎魔女」
+  1050, // 投资计划
   7, // 距离我方出战角色最近的角色
   66, // 冒险
   67, // 元素幻变
@@ -636,10 +639,7 @@ export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
 
 export function delicateFightingSpirit(before: string) {
   return before
-    .replaceAll(
-      "战意",
-      "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>",
-    )
+    .replaceAll("战意", "<color=#D8B456FF>{SPRITE_PRESET#4008}战意</color>")
     .replaceAll(
       "Fighting Spirit",
       "<color=#D8B456FF>{SPRITE_PRESET#4008}Fighting Spirit</color>",
