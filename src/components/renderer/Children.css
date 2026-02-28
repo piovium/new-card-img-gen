@@ -57,6 +57,8 @@
   width: 148px;
   height: 230px;
   border-radius: 1rem;
+  overflow: hidden;
+  background-color: #cbc0a6;
 }
 
 .keyword-card-frame {
