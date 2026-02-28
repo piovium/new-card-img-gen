@@ -30,6 +30,10 @@
     object-fit: cover;
     -webkit-user-drag: none;
   }
+
+  div {
+    display: block;
+  }
 }
 
 #root {
