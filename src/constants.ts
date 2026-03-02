@@ -743,22 +743,6 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 303061, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 303062, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 303071, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 303072, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
-    }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -776,14 +760,6 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 331006, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2107}<color=#7EC236FF>草元素骰</color>", "{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>"),
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 331007, // 幻变 修正一处图标错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("{SPRITE_PRESET#2106}<color=#FFE699FF>岩元素骰</color>", "{SPRITE_PRESET#1106}<color=#FFE699FF>岩元素骰</color>"),
     }),
   ],
 };
