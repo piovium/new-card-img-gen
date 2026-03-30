@@ -18,10 +18,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
   return (
     <div class="character">
       <div class="character-header">
-        <CardFace
-          class="character-image-container"
-          item={character()}
-        >
+        <CardFace class="character-image-container" item={character()}>
           <div class="avatar-card-hp">
             <img src={AVATAR_CARD_HP} class="avatar-card-hp-image" />
             <div class="stroked-text-top">{character().hp}</div>
@@ -65,7 +62,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
             </For>
           </div>
           <hr class="info-divider" />
-          <p 
+          <p
             class="info-story"
             data-justify={["CHS", "CHT"].includes(language())}
           >
@@ -79,8 +76,10 @@ export const Character = (props: { character: ParsedCharacter }) => {
           </Show>
         </div>
       </div>
-      <For each={character().parsedSkills.slice(1)}>{(sk) => <SkillBox skill={sk} />}</For>
-      
+      <For each={character().parsedSkills.slice(1)}>
+        {(sk) => <SkillBox skill={sk} />}
+      </For>
+
       {/* debug 模式下的 RELATED_ENTITIES 容器 */}
       <Show when={debug() && character().debugChildren.length > 0}>
         <DebugBox children={character().debugChildren} />

@@ -201,7 +201,7 @@ export const GeneralConfigTab = withForm({
         </form.AppField>
 
         <label class="fieldset-legend" for="general.debug">
-          Debug 模式
+          调试模式
         </label>
         <form.AppField name="general.debug">
           {(field) => (
