@@ -74,6 +74,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     displayStory: true,
     mirroredLayout: false,
     watermarkText: "",
+    debug: false,
   },
   newItems: INITIAL_NEW_ITEMS,
   adjustments: [],
@@ -345,6 +346,7 @@ export const App = () => {
           config()?.cardbackImage || INITIAL_FORM_VALUE.general.cardbackImage,
         displayStory: () => !!config()?.displayStory,
         displayId: () => !!config()?.displayId,
+        debug: () => !!config()?.debug,
       }}
     >
       <div

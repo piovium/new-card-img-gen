@@ -1,4 +1,4 @@
-import { For, Show, createMemo } from "solid-js";
+import { For, Show } from "solid-js";
 import type { ParsedCharacter } from "../../types";
 import { useGlobalSettings } from "../../context";
 import {
@@ -6,18 +6,15 @@ import {
   AVATAR_CARD_HP,
   SPECIAL_ENERGY_MAP,
 } from "../../constants";
-import { SkillBox } from "./SkillBox";
+import { DebugBox, SkillBox } from "./SkillBox";
 import { CardFace } from "./CardFace";
 import { Tag } from "./Tag";
 import { Text } from "./Text";
 import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
-  const { displayId, displayStory, language } = useGlobalSettings();
+  const { displayId, displayStory, language, debug } = useGlobalSettings();
   const character = () => props.character;
-  const skillsMemo = createMemo(() => character().parsedSkills);
-  const normalSkill = createMemo(() => skillsMemo()[0]);
-  const otherSkills = createMemo(() => skillsMemo().slice(1));
   return (
     <div class="character">
       <div class="character-header">
@@ -77,14 +74,17 @@ export const Character = (props: { character: ParsedCharacter }) => {
             </Show>
           </p>
           <div class="spacer" />
-          <Show when={normalSkill()}>
-            {(sk: () => ParsedCharacter["parsedSkills"][number]) => (
-              <SkillBox skill={sk()} />
-            )}
+          <Show when={character().parsedSkills[0]}>
+            {(sk) => <SkillBox skill={sk()} />}
           </Show>
         </div>
       </div>
-      <For each={otherSkills()}>{(sk) => <SkillBox skill={sk} />}</For>
+      <For each={character().parsedSkills.slice(1)}>{(sk) => <SkillBox skill={sk} />}</For>
+      
+      {/* debug 模式下的 RELATED_ENTITIES 容器 */}
+      <Show when={debug() && character().debugChildren.length > 0}>
+        <DebugBox children={character().debugChildren} />
+      </Show>
     </div>
   );
 };

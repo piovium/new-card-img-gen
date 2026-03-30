@@ -199,6 +199,15 @@ export const GeneralConfigTab = withForm({
             />
           )}
         </form.AppField>
+
+        <label class="fieldset-legend" for="general.debug">
+          Debug 模式
+        </label>
+        <form.AppField name="general.debug">
+          {(field) => (
+            <field.ToggleField class="self-center" id="general.debug" />
+          )}
+        </form.AppField>
       </div>
     );
   },
