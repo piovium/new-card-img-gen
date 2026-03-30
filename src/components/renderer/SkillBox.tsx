@@ -1,5 +1,5 @@
 import { Show } from "solid-js";
-import type { ParsedSkill } from "../../types";
+import type { ParsedChild, ParsedSkill } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { TYPE_TAG_TEXT_MAP } from "../../constants";
 import { Cost } from "./Cost";
@@ -42,5 +42,16 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         </Show>
       </div>
     </Show>
+  );
+};
+
+export const DebugBox = (props: { children: ParsedChild[] }) => {
+  return (
+      <div class="skill-box debug-box figure">
+        <div class="skill-type">
+          {`DEBUG`}
+        </div>
+        <Children children={props.children} />
+      </div>
   );
 };

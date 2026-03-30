@@ -4,6 +4,7 @@ import {
   CHILDREN_CONFIG,
   DAMAGE_KEYWORD_MAP,
   KEYWORD_COLORS,
+  RELATED_ENTITIES,
   SHOWN_KEYWORDS,
 } from "./constants";
 import type {
@@ -96,10 +97,10 @@ export const parseDescription = (
         return rootParenthesis?.afterBr
           ? "light"
           : rootColor?.isConditionBold
-          ? "dimmed"
-          : rootColor?.isBold
-          ? "strong"
-          : void 0;
+            ? "dimmed"
+            : rootColor?.isBold
+              ? "strong"
+              : void 0;
       },
       style() {
         return (this.overrideStyle() ?? "normal") as
@@ -290,10 +291,9 @@ export const appendChildren = (
         case "C": {
           const entityDataMerged = ctx.genericEntities
             .filter((e) => e.id === child.id)
-            .reduce<Record<string, unknown>>(
-              (acc, e) => ({ ...acc, ...e }),
-              {},
-            );
+            .reduce<
+              Record<string, unknown>
+            >((acc, e) => ({ ...acc, ...e }), {});
           if (!("id" in entityDataMerged)) continue;
           // entityDataMerged now behaves as ChildLikeBase
           result.push(
@@ -346,15 +346,32 @@ export const parseCharacter = (
   ctx: RenderContext,
   data:
     | CharacterRawData
-    | ({ skills: SkillRawData[] } & Record<string, unknown>),
+    | ({ id: number; skills: SkillRawData[] } & Record<string, unknown>),
 ): ParsedCharacter => {
   ctx.supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
   const parsedSkills = data.skills.flatMap((skill) =>
     skill.hidden ? [] : [parseCharacterSkill(ctx, skill)],
   );
+
+  const debugChildren: ParsedChild[] = [];
+  const hiddenSkill = data.skills.filter(
+    (sk) => sk.hidden && !ctx.supIds.includes(sk.id),
+  );
+  for (const skill of hiddenSkill) {
+    debugChildren.push(...appendChildren(ctx, skill, "self"));
+  }
+  const relatedIds = RELATED_ENTITIES[data.id] ?? [];
+  for (const id of relatedIds) {
+    const entity = ctx.genericEntities.find((e) => e.id === id);
+    if (entity) {
+      debugChildren.push(...appendChildren(ctx, entity, "self"));
+    }
+  }
+
   return {
     ...(data as Record<string, unknown>),
     parsedSkills,
+    debugChildren,
   } as ParsedCharacter;
 };
 
@@ -367,9 +384,21 @@ export const parseActionCard = (
   if (data.tags.includes("GCG_TAG_ADVENTURE_PLACE")) {
     description += `\\n${ADVENTURE_PLACE_ADDITIONAL_DESC[ctx.language]}`;
   }
+  const children = appendChildren(ctx, data, "children");
+
+  const debugChildren: ParsedChild[] = [];
+  const relatedIds = RELATED_ENTITIES[data.id] ?? [];
+  for (const id of relatedIds) {
+    const entity = ctx.genericEntities.find((e) => e.id === id);
+    if (entity) {
+      debugChildren.push(...appendChildren(ctx, entity, "self"));
+    }
+  }
+
   return {
     ...data,
     parsedDescription: parseDescription(ctx, description),
-    children: appendChildren(ctx, data, "children"),
+    children,
+    debugChildren,
   };
 };

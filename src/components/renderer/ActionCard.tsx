@@ -1,4 +1,4 @@
-import { Show, For } from "solid-js";
+import { Show, For, createMemo } from "solid-js";
 import type { ParsedActionCard } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { Tag } from "./Tag";
@@ -10,8 +10,16 @@ import { Text } from "./Text";
 import "./ActionCard.css";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
-  const { displayId, language } = useGlobalSettings();
+  const { displayId, language, debug } = useGlobalSettings();
   const card = () => props.card;
+  const allChildren = createMemo(() => {
+    if (debug()) {
+      return [...card().children, ...card().debugChildren];
+    } else {
+      return card().children;
+    }
+  });
+
   return (
     <div class="action-card">
       <div class="action-card-info figure">
@@ -35,8 +43,8 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         >
           <Description description={card().parsedDescription} />
         </div>
-        <Show when={card().children.length > 0}>
-          <Children children={card().children} />
+        <Show when={allChildren().length > 0}>
+          <Children children={allChildren()} />
         </Show>
       </div>
       <CardFace
@@ -50,9 +58,9 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
             card().playCost.length === 0
               ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
               : card().playCost.length === 1 &&
-                card().playCost[0].type === "GCG_COST_LEGEND"
-              ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card().playCost]
-              : card().playCost
+                  card().playCost[0].type === "GCG_COST_LEGEND"
+                ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card().playCost]
+                : card().playCost
           }
         />
       </CardFace>

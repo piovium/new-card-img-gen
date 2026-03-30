@@ -133,6 +133,7 @@ export interface FormValue {
     displayId: boolean;
     displayStory: boolean;
     watermarkText: string;
+    debug: boolean;
   };
   newItems: {
     characters: NewCharacterData[];

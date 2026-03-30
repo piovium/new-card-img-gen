@@ -37,11 +37,13 @@ export interface AppConfig {
   displayStory?: boolean;
   watermarkText?: string;
   adjustments?: AdjustmentData[];
+  debug?: boolean;
 }
 
 export interface ParsedCharacter extends CharacterRawData {
   parsedSkills: ParsedSkill[];
   iconUrl?: string;
+  debugChildren: ParsedChild[];
 }
 export interface ParsedSkill extends SkillRawData {
   parsedDescription: ParsedDescription;
@@ -53,6 +55,7 @@ export interface ParsedEntity extends EntityRawData {
 export interface ParsedActionCard extends ActionCardRawData {
   parsedDescription: ParsedDescription;
   children: ParsedChild[];
+  debugChildren: ParsedChild[];
 }
 export interface ParsedKeyword extends KeywordRawData {
   type: "GCG_RULE_EXPLANATION";
@@ -92,6 +95,7 @@ export interface GlobalSettingsValue {
   cardbackImage: Accessor<string>;
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;
+  debug: Accessor<boolean>;
 }
 
 export interface RenderContext {

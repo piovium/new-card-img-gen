@@ -102,6 +102,7 @@ const bunServer = new Elysia()
         authorName: body.authorName,
         authorImageUrl:
           body.authorImageUrl ?? new URL("./vite.svg", address).href,
+        debug: body.debug ?? false,
         render: {
           format: body.renderFormat,
           quality: body.renderQuality,
@@ -123,6 +124,7 @@ const bunServer = new Elysia()
         displayId: t.Optional(t.Boolean()),
         displayStory: t.Optional(t.Boolean()),
         mirroredLayout: t.Optional(t.Boolean()),
+        debug: t.Optional(t.Boolean()),
         renderFormat: t.Optional(t.Enum(RenderFormat)),
         renderQuality: t.Optional(t.Number()),
       }),
