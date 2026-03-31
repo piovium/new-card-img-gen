@@ -72,6 +72,19 @@ export const Children = (props: { children: ParsedChild[] }) => {
                       <Show when={preparing}>
                         <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
                       </Show>
+                      <Show when={child.hidden}>
+                        <KeywordTag tag="GCG_DATA_HIDDEN" />
+                      </Show>
+                      <Show when={child.remainAfterDie}>
+                        <KeywordTag tag="GCG_DATA_REMAIN" />
+                      </Show>
+                      <Show
+                        when={["GCG_CARD_SUMMON", "GCG_CARD_ASSIST"].includes(
+                          child.type,
+                        )}
+                      >
+                        <KeywordTag tag={child.shownIcon ?? ""} />
+                      </Show>
                       <Show when={displayId()}>
                         <div class="id-box">ID: {child.id}</div>
                       </Show>

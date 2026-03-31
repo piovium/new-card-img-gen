@@ -34,3 +34,7 @@
   mask-image: var(--image);
   background-color: var(--bg-color);
 }
+
+.debug-tag {
+  --bg-color: #a1baca;
+}
