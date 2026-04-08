@@ -22,7 +22,9 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
   14151: "_", // 瓦雷莎 A
-  14174: "$[K3001],$[C205],$[C204]$[C207]", // 伊涅夫 P
+  14174: "$[K3001],$[C205],$[C204],$[C207]", // 伊涅芙 P
+  14182: "$[C114181],$[S14185]", // 菲林斯 E
+  14184: "$[K3001],$[C205],$[C204]", // 菲林斯 P
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
   15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
   15153: "$[C115153],$[C115154],$[C115155],$[C115156]", // 伊法 Q
@@ -65,6 +67,7 @@ export const SHOWN_KEYWORDS = [
   67, // 元素幻变
   3001, // 月感电
   3002, // 当前元素骰费用
+  3009, // 月绽放
 ];
 
 export const COST_READONLY_ENTITIES = [
@@ -798,6 +801,22 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<EntityRawData>(null, null, {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 117111, // 月七v1图标错误，我猜的
+      buffIcon: "UI_Gcg_Buff_Lauma_S",
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 117112,
+      buffIcon: "UI_Gcg_Buff_Lauma_Q",
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 126053,
+      buffIcon: "UI_Gcg_Buff_Gravitas_S",
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 126052,
+      buffIcon: "UI_Gcg_Buff_Gravitas_E",
     }),
   ],
   actionCards: [
