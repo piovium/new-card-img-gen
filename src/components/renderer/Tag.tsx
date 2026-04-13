@@ -10,7 +10,7 @@ export const Tag = (props: {
   tag: string;
   className?: string;
 }) => {
-  const { language } = useGlobalSettings();
+  const { language, debug } = useGlobalSettings();
   return (
     <Switch>
       <Match when={TYPE_TAG_TEXT_MAP[language()][props.tag]}>
@@ -35,7 +35,7 @@ export const Tag = (props: {
           </div>
         </div>
       </Match>
-      <Match when={DEBUG_TAG_TEXT_MAP[language()][props.tag]}>
+      <Match when={debug() && DEBUG_TAG_TEXT_MAP[language()][props.tag]}>
         <div class={`tag ${props.className ?? ""}`} data-tag-type="debug">
           <div class="tag-text">
             <Text
