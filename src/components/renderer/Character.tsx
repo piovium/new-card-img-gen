@@ -54,6 +54,10 @@ export const Character = (props: { character: ParsedCharacter }) => {
                 <span> </span>
                 <span class="id-box">ID: {character().id}</span>
               </Show>
+              <Show when={debug()}>
+                <span> </span>
+                <span class="id-box">SinceVersion: {character().sinceVersion}</span>
+              </Show>
             </div>
           </div>
           <div class="character-tags">

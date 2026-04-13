@@ -22,6 +22,10 @@
   --bg-color: #4d6b91;
 }
 
+.tag[data-tag-type="debug"] {
+  --bg-color: #a1baca;
+}
+
 .tag-text {
   font-size: 2.5rem;
   color: var(--fg-color);

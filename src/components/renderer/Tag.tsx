@@ -1,5 +1,5 @@
-import { Show } from "solid-js";
-import { TYPE_TAG_TEXT_MAP } from "../../constants";
+import { Match, Show, Switch } from "solid-js";
+import { TYPE_TAG_TEXT_MAP, DEBUG_TAG_TEXT_MAP } from "../../constants";
 import { useGlobalSettings } from "../../context";
 import { tagImageUrl } from "../../utils";
 import { Text } from "./Text";
@@ -12,30 +12,38 @@ export const Tag = (props: {
 }) => {
   const { language } = useGlobalSettings();
   return (
-    <Show
-      when={
-        TYPE_TAG_TEXT_MAP[language()][props.tag] ||
-        !props.tag.startsWith("GCG_")
-      }
-    >
-      <div class={`tag ${props.className ?? ""}`} data-tag-type={props.type}>
-        <div class="tag-icon-container">
-          <Show
-            when={props.tag.startsWith("GCG_TAG_ELEMENT_")}
-            fallback={
-              <div
-                class="tag-icon-mask"
-                style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
-              />
-            }
-          >
-            <img class="tag-icon-image" src={tagImageUrl(props.tag)} />
-          </Show>
+    <Switch>
+      <Match when={TYPE_TAG_TEXT_MAP[language()][props.tag]}>
+        <div class={`tag ${props.className ?? ""}`} data-tag-type={props.type}>
+          <div class="tag-icon-container">
+            <Show
+              when={props.tag.startsWith("GCG_TAG_ELEMENT_")}
+              fallback={
+                <div
+                  class="tag-icon-mask"
+                  style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
+                />
+              }
+            >
+              <img class="tag-icon-image" src={tagImageUrl(props.tag)} />
+            </Show>
+          </div>
+          <div class="tag-text">
+            <Text
+              text={TYPE_TAG_TEXT_MAP[language()][props.tag] ?? props.tag}
+            />
+          </div>
         </div>
-        <div class="tag-text">
-          <Text text={TYPE_TAG_TEXT_MAP[language()][props.tag] ?? props.tag} />
+      </Match>
+      <Match when={DEBUG_TAG_TEXT_MAP[language()][props.tag]}>
+        <div class={`tag ${props.className ?? ""}`} data-tag-type="debug">
+          <div class="tag-text">
+            <Text
+              text={DEBUG_TAG_TEXT_MAP[language()][props.tag] ?? props.tag}
+            />
+          </div>
         </div>
-      </div>
-    </Show>
+      </Match>
+    </Switch>
   );
 };

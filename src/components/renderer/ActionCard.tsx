@@ -10,7 +10,7 @@ import { Text } from "./Text";
 import "./ActionCard.css";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
-  const { displayId, language, debug } = useGlobalSettings();
+  const { allData, displayId, language, debug } = useGlobalSettings();
   const card = () => props.card;
   const allChildren = createMemo(() => {
     if (debug()) {
@@ -19,6 +19,9 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
       return card().children;
     }
   });
+  const entity = createMemo(() =>
+    allData().entities.find((e) => e.id === card().id),
+  );
 
   return (
     <div class="action-card">
@@ -29,12 +32,21 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
             <span> </span>
             <span class="id-box">ID: {card().id}</span>
           </Show>
+          <Show when={debug()}>
+            <span> </span>
+            <span class="id-box">from: {card().sinceVersion}</span>
+          </Show>
         </div>
         <div class="action-card-tags">
           <Tag type="cardType" tag={card().type} />
           <For each={card().tags}>
             {(tag) => <Tag type="cardTag" tag={tag} />}
           </For>
+          <Show
+            when={["GCG_CARD_SUMMON", "GCG_CARD_ASSIST"].includes(entity()?.type ?? "")}
+          >
+            <Tag type="cardTag" tag={entity()?.shownIcon ?? ""} />
+          </Show>
         </div>
         <div class="dashed-line" />
         <div
