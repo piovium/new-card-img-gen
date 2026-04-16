@@ -56,7 +56,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
               </Show>
               <Show when={debug()}>
                 <span> </span>
-                <span class="id-box">SinceVersion: {character().sinceVersion}</span>
+                <span class="id-box">from: {character().sinceVersion}</span>
               </Show>
             </div>
           </div>
