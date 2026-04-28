@@ -810,14 +810,6 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 117112,
       buffIcon: "UI_Gcg_Buff_Lauma_Q",
     }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 126053,
-      buffIcon: "UI_Gcg_Buff_Gravitas_S",
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 126052,
-      buffIcon: "UI_Gcg_Buff_Gravitas_E",
-    }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -856,7 +848,7 @@ export const RELATED_ENTITIES: Record<number, number[]> = {
   // : [111074, ], // 箓灵 已弃用
   1112: [111123], // 潜猎护盾
   1115: [111156, 111157, 111158], // 鎏金殿堂（生效中）, 白浪拂沙（生效中）, 一捧绿野（生效中）
-  1116: [111164, ], // 死河渡断
+  // 1116: [111164, ], // 死河渡断 已弃用
   1117: [111173, 111174, 111175], // 速射牵制（生效中）, 侦明, 爆裂信标
   1202: [112023], // 雨帘剑
   1204: [112044, 112045], // 断流
