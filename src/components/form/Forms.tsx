@@ -142,6 +142,7 @@ export interface FormValue {
     keywords: NewKeywordData[];
   };
   adjustments: AdjustmentData[];
+  versionedActionCardSelection: boolean[];
 }
 
 type TabKey = (typeof TAB_LISTS)[number]["key"];

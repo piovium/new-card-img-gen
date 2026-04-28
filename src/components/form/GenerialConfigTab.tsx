@@ -1,4 +1,4 @@
-import { createEffect, createMemo, For, Match, Show, Switch } from "solid-js";
+import { createMemo, Show } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useMainFormContext, type GenerationMode } from "./Forms";
 import { pseudoMainFormOption, withForm } from "./shared";
@@ -44,6 +44,22 @@ export const GeneralConfigTab = withForm({
       return list;
     });
 
+    const versionedActionCards = createMemo(() => {
+      if (currentVersion().startsWith("v")) {
+        const collected = allData()
+          .actionCards.filter(
+            (ac) =>
+              ac.sinceVersion === currentVersion() &&
+              (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
+              !ac.tags.includes("GCG_TAG_TALENT"),
+          )
+          .map((ac) => ac.name);
+        return collected;
+      } else {
+        return [];
+      }
+    });
+
     const mode = form.useStore((state) => state.values.general.mode);
     const isCharacterMode = () => mode() === "character";
     const isSingleActionCardMode = () => mode() === "singleActionCard";
@@ -59,7 +75,7 @@ export const GeneralConfigTab = withForm({
         >
           版本
         </label>
-        <div class="flex flex-row gap-2 w-[clamp(3rem,20rem,100%)]">
+        <div class="flex flex-row gap-2">
           <form.AppField name="general.version">
             {(field) => (
               <field.SelectField
@@ -72,7 +88,7 @@ export const GeneralConfigTab = withForm({
           </form.AppField>
           <Show when={readonlyVersion()}>
             <button
-              class="btn btn-link btn-sm p-0"
+              class="btn btn-success btn-soft"
               type="button"
               onClick={() => {
                 form.setFieldValue("general.version", "latest");
@@ -99,6 +115,21 @@ export const GeneralConfigTab = withForm({
 
         <label
           class="fieldset-legend"
+          classList={{ hidden: !isVersionedActionCardsMode() }}
+        >
+          选择卡牌
+        </label>
+        <form.AppField name="versionedActionCardSelection">
+          {(field) => (
+            <field.CheckboxListField
+              options={versionedActionCards()}
+              hidden={!isVersionedActionCardsMode()}
+            />
+          )}
+        </form.AppField>
+
+        <label
+          class="fieldset-legend"
           classList={{ hidden: !isCharacterMode() }}
           for="general.characterId"
         >
@@ -111,6 +142,7 @@ export const GeneralConfigTab = withForm({
               hidden={!isCharacterMode()}
               id="general.characterId"
               placeholder="1503"
+              class="w-full"
             />
           )}
         </form.AppField>
@@ -138,7 +170,7 @@ export const GeneralConfigTab = withForm({
         </label>
         <form.AppField name="general.cardbackImage">
           {/* TODO: select */}
-          {(field) => <field.TextField id="general.cardbackImage" />}
+          {(field) => <field.TextField id="general.cardbackImage" class="w-full" />}
         </form.AppField>
 
         <span class="fieldset-legend">语言</span>
@@ -157,14 +189,14 @@ export const GeneralConfigTab = withForm({
           左下附注
         </label>
         <form.AppField name="general.authorName">
-          {(field) => <field.TextField id="general.authorName" />}
+          {(field) => <field.TextField id="general.authorName" class="w-full" />}
         </form.AppField>
 
         <label class="fieldset-legend" for="general.watermarkText">
           水印文本
         </label>
         <form.AppField name="general.watermarkText">
-          {(field) => <field.TextField id="general.watermarkText" />}
+          {(field) => <field.TextField id="general.watermarkText" class="w-full" />}
         </form.AppField>
 
         <label class="fieldset-legend" for="general.authorImageUrl">

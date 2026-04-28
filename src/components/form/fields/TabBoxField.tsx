@@ -12,7 +12,7 @@ export default function RadioButtonGroupField<T extends string = string>(
   const field = useFieldContext<T>();
 
   return (
-    <div class="tabs tabs-box w-fit">
+    <div class="tabs tabs-box w-full justify-evenly">
       <For each={props.options}>
         {(option) => (
           <label class="tab has-checked:tab-active">

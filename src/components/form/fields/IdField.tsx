@@ -9,10 +9,10 @@ export default function IdField(props: IdFieldProps) {
   const [local, rest] = splitProps(props, ["class", "hidden"]);
   const field = useFieldContext<number>();
   return (
-    <label class="input" classList={{ hidden: !!local.hidden }}>
+    <label class={`input ${local.class ?? ""}`} classList={{ hidden: !!local.hidden }}>
       <input
         type="number"
-        class={`grow ${local.class ?? ""}`}
+        class="grow"
         onInput={(e) => field().handleChange(e.currentTarget.valueAsNumber)}
         onBlur={() => field().handleBlur()}
         value={field().state.value}

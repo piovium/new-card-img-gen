@@ -37,6 +37,7 @@ export interface AppConfig {
   displayStory?: boolean;
   watermarkText?: string;
   adjustments?: AdjustmentData[];
+  versionedActionCardSelection?: boolean[];
   debug?: boolean;
 }
 

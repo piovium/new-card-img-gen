@@ -102,12 +102,16 @@ export const Renderer = (props: AppConfig) => {
       }
     } else if (mode === "versionedActionCards") {
       if (version.startsWith("v")) {
-        const collected = data.actionCards.filter(
-          (ac) =>
-            ac.sinceVersion === version &&
-            (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-            !ac.tags.includes("GCG_TAG_TALENT"),
-        );
+        const collected = data.actionCards
+          .filter(
+            (ac) =>
+              ac.sinceVersion === version &&
+              (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
+              !ac.tags.includes("GCG_TAG_TALENT"),
+          )
+          .filter(
+            (_, idx) => props.versionedActionCardSelection?.[idx] ?? true,
+          );
         actionCards.push(
           ...collected.map((c) => parseActionCard(renderContext, c)),
         );

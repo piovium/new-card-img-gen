@@ -53,8 +53,8 @@ export default function ImageField(props: ImageFieldProps) {
 
   return (
     <div class="flex flex-row items-center gap-2">
-      <div class="w-16 h-20 bg-base-200 rounded-sm flex items-center justify-center overflow-clip">
-        <Show when={value()}>{(url) => <img src={url()} />}</Show>
+      <div class="flex-1 h-20 bg-base-200 rounded-lg flex items-center justify-center overflow-clip">
+        <Show when={value()}>{(url) => <img src={url()} class="w-full h-full object-contain" />}</Show>
       </div>
       <div class="flex flex-row items-center gap-2">
         <Show

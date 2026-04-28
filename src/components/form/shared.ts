@@ -31,6 +31,7 @@ export const { useAppForm, withForm } = createFormHook({
     TagsField: lazy(() => import("./fields/TagsField")),
     RawDescriptionField: lazy(() => import("./fields/RawDescriptionField")),
     IconSelectField: lazy(() => import("./fields/IconSelectField")),
+    CheckboxListField: lazy(() => import("./fields/CheckboxListField")),
   },
   formComponents: {},
 });

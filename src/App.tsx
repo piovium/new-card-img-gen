@@ -78,6 +78,7 @@ const INITIAL_FORM_VALUE: FormValue = {
   },
   newItems: INITIAL_NEW_ITEMS,
   adjustments: [],
+  versionedActionCardSelection: [],
 };
 
 const removeUndefined = <T extends Record<string, unknown>>(obj: T): T => {
@@ -93,6 +94,7 @@ const formValueFromUrl = {
     version: (versionFromUrl as Version) || void 0,
   }),
   newItems: INITIAL_NEW_ITEMS,
+  versionedActionCardSelection: [] as boolean[],
 } as const;
 
 const [persistedFormValue, setPersistedFormValue] = makePersisted(
@@ -144,6 +146,7 @@ export const App = () => {
         entities: [],
         keywords: [],
       },
+      versionedActionCardSelection: [],
     });
     const prevVersion = remoteFetched.version;
     const newVersion = newFormValue.general.version;
@@ -234,6 +237,8 @@ export const App = () => {
         data,
         ...newFormValue.general,
         adjustments: newFormValue.adjustments,
+        versionedActionCardSelection:
+          newFormValue.versionedActionCardSelection,
       });
       setMobilePreviewing(true);
     } catch (e) {
