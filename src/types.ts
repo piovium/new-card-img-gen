@@ -117,7 +117,7 @@ export interface RenderContext {
 }
 
 export interface AdjustmentRecord {
-  id: number;
+  id: string | number;
   subject:
     | "self"
     | "normalAttack"
@@ -138,7 +138,7 @@ export interface AdjustmentRecord {
 }
 
 export interface AdjustmentData {
-  id: number;
+  id: string | number;
   offset: number;
   adjustment: AdjustmentRecord[];
 }

@@ -1,8 +1,8 @@
 import { For, Show, createMemo, type JSX } from "solid-js";
-import type { ActionCardRawData, AdjustmentData, AdjustmentRecord, CharacterRawData } from "../../types";
+import type { AdjustmentData, AdjustmentRecord } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { Text } from "./Text";
-import { cardFaceUrl, tagImageUrl } from "../../utils";
+import { cardFaceUrl, tagImageUrl, parseId } from "../../utils";
 import {
   DESCRIPTION_ICON_IMAGES,
   ADJUSTMENT_SUBJECT_LABELS,
@@ -22,10 +22,9 @@ export interface BalanceAdjustmentProps {
 }
 
 interface AdjustmentCardProps {
-  id: number;
   offset: number;
-  name: string | undefined;
-  cardFaceItem?: CharacterRawData | ActionCardRawData;
+  name?: string;
+  cardFace?: string;
   children?: JSX.Element;
 }
 
@@ -36,10 +35,10 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
         <Text text={props.name} />
       </div>
       <div class="dashed-line" />
-      <Show when={props.cardFaceItem}>
-        {(item) => (
+      <Show when={props.cardFace}>
+        {(cardFace) => (
           <img
-            src={cardFaceUrl(item())}
+            src={cardFaceUrl({ id: 0, name: "", cardFace: cardFace() })}
             class="adjustment-card-face"
             style={{
               top: `${props.offset - 0.25}rem`,
@@ -117,7 +116,7 @@ interface AdjustmentRecordProps {
   record: AdjustmentRecord;
 }
 
-const AdjustmentRecord = (props: AdjustmentRecordProps) => {
+const AdjustmentRecordItem = (props: AdjustmentRecordProps) => {
   const isInlineType = (type: string) => type === "hp" || type === "cost";
   const { allData, language } = useGlobalSettings();
   const names = createMemo(() => {
@@ -134,11 +133,11 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   });
 
   const lang = language();
-  const recordName = createMemo(() =>
-    lang === "CHS"
-      ? `「${names()?.get(props.record.id)}」`
-      : ` "${names()?.get(props.record.id)}" `,
-  );
+  const custom = () => parseId(props.record.id) === null;
+  const recordName = createMemo(() => {
+    const name = names()?.get(parseId(props.record.id) ?? 0);
+    return lang === "CHS" ? `「${name}」` : ` "${name}" `;
+  });
   const subjectLabel = () =>
     ADJUSTMENT_SUBJECT_LABELS[lang][props.record.subject] ||
     props.record.subject;
@@ -148,10 +147,14 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
   const oldSign = lang === "CHS" ? OLD_SIGN_CHS : OLD_SIGN_EN;
   const newSign = lang === "CHS" ? NEW_SIGN_CHS : NEW_SIGN_EN;
   const title = () =>
-    props.record.subject === "self"
-      ? `${typeLabel()}${adjustmentText}`
-      : `${subjectLabel()}${recordName()}${typeLabel()}${adjustmentText}`;
+    custom()
+      ? props.record.id.toString()
+      :props.record.subject === "self"
+        ? `${typeLabel()}${adjustmentText}`
+        : `${subjectLabel()}${recordName()}${typeLabel()}${adjustmentText}`;
   const isInline = () => isInlineType(props.record.type);
+  const hasOld = () => props.record.oldData !== "";
+  const hasNew = () => props.record.newData !== "";
 
   return (
     <div class="adjustment-record">
@@ -162,8 +165,8 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
         when={isInline()}
         fallback={
           <>
-            <div class="record-block">
-              <img src={oldSign} class="record-sign" />
+            <div class="record-block" bool:data-hidden={!hasOld()}>
+              <img src={oldSign} class="record-sign" bool:data-hidden={!hasNew()} />
               <div 
                 class="record-content" 
                 data-justify={["CHS", "CHT"].includes(language())}
@@ -171,8 +174,8 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
                 {parseAdjustmentText(props.record.oldData)}
               </div>
             </div>
-            <div class="record-block">
-              <img src={newSign} class="record-sign" />
+            <div class="record-block" bool:data-hidden={!hasNew()}>
+              <img src={newSign} class="record-sign" bool:data-hidden={!hasOld()} />
               <div 
                 class="record-content" 
                 data-justify={["CHS", "CHT"].includes(language())}
@@ -209,9 +212,7 @@ const AdjustmentRecord = (props: AdjustmentRecordProps) => {
 
 interface ResolvedCardData {
   name: string;
-  cardFace: string;
-  item: CharacterRawData | ActionCardRawData;
-  isLegend?: boolean;
+  cardFace?: string;
 }
 
 export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
@@ -219,22 +220,25 @@ export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
   const processedAdjustments = createMemo(() => {
     const data = allData();
 
-    const resolveCardData = (id: number): ResolvedCardData | null => {
-      const character = data.characters.find((c) => c.id === id);
+    const resolveCardData = (id: string | number): ResolvedCardData | null => {
+      const parsedId = parseId(id);
+      if (parsedId === null) {
+        return {
+          name: id.toString(),
+        };
+      }
+      const character = data.characters.find((c) => c.id === parsedId);
       if (character) {
         return {
           name: character.name,
           cardFace: character.cardFace,
-          item: character,
         };
       }
-      const actionCard = data.actionCards.find((c) => c.id === id);
+      const actionCard = data.actionCards.find((c) => c.id === parsedId);
       if (actionCard) {
         return {
           name: actionCard.name,
           cardFace: actionCard.cardFace,
-          item: actionCard,
-          isLegend: actionCard.tags.includes("GCG_TAG_LEGEND"),
         };
       }
       return null;
@@ -251,14 +255,16 @@ export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
       <For each={processedAdjustments()}>
         {(item) => (
           <AdjustmentCard
-            id={item.adjustment.id}
             offset={item.adjustment.offset}
             name={item.cardData?.name}
-            cardFaceItem={item.cardData?.item}
+            cardFace={item.cardData?.cardFace}
           >
-            <div class="adjustment-records">
+            <div
+              class="adjustment-records"
+              bool:data-wide={item.cardData?.cardFace === undefined}
+            >
               <For each={item.adjustment.adjustment}>
-                {(record) => <AdjustmentRecord record={record} />}
+                {(record) => <AdjustmentRecordItem record={record} />}
               </For>
             </div>
           </AdjustmentCard>

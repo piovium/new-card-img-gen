@@ -92,6 +92,10 @@
   text-indent: 0;
 }
 
+.adjustment-records[data-wide] {
+  width: 100%;
+}
+
 .adjustment-record {
   padding: 0.5rem;
 }
@@ -106,6 +110,10 @@
   gap: 0.25rem;
 }
 
+.record-block[data-hidden] {
+  display: none;
+}
+
 .record-inline {
   display: flex;
   align-items: center;
@@ -117,6 +125,10 @@
   height: 1.4em;
   margin-right: 0rem;
   flex-shrink: 0;
+}
+
+.record-sign[data-hidden] {
+  display: none;
 }
 
 .record-content {

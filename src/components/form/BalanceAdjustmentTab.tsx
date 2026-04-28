@@ -6,9 +6,10 @@ import {
   createResource,
 } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
-import type { AllRawData, PlayCost, Language } from "../../types";
+import type { AllRawData, PlayCost } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { getData } from "../../shared";
+import { parseId } from "../../utils";
 import {
   ADJUSTMENT_SUBJECT_LABELS,
   ADJUSTMENT_TYPE_LABELS,
@@ -111,24 +112,21 @@ export const BalanceAdjustmentTab = withForm({
                 <h2 class="menu-title">调整卡牌</h2>
               </li>
               <Index each={adjustments()}>
-                {(_, idx) => {
-                  const adjId = form.useStore(
-                    (state) => state.values.adjustments[idx]?.id,
-                  );
-                  return (
-                    <li>
-                      <button
-                        type="button"
-                        classList={{
-                          "menu-active": currentAdjustmentIndex() === idx,
-                        }}
-                        onClick={() => setCurrentAdjustmentIndex(idx)}
-                      >
-                        {names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}
-                      </button>
-                    </li>
-                  );
-                }}
+                {(adj, idx) => 
+                  <li>
+                    <button
+                      type="button"
+                      classList={{
+                        "menu-active": currentAdjustmentIndex() === idx,
+                      }}
+                      onClick={() => setCurrentAdjustmentIndex(idx)}
+                    >
+                      {parseId(adj().id) === null
+                        ? adj().id
+                        : names()?.get(parseId(adj().id) ?? 0) ?? "新增调整卡牌"}
+                    </button>
+                  </li>
+                }
               </Index>
               <form.Field name="adjustments" mode="array">
                 {(field) => (
@@ -169,7 +167,9 @@ export const BalanceAdjustmentTab = withForm({
                     >
                       <div class="col-span-full flex flex-row gap-2 align-baseline items-center justify-between">
                         <h3 class="mb-0 text-lg font-bold">
-                          {names()?.get(adjId() ?? 0) ?? "新增调整卡牌"}
+                        {parseId(adjId()) === null
+                          ? adjId()
+                          : names()?.get(parseId(adjId()) ?? 0) ?? "新增调整卡牌"}
                         </h3>
                         <form.Field name="adjustments" mode="array">
                           {(field) => (
@@ -195,7 +195,7 @@ export const BalanceAdjustmentTab = withForm({
                         </label>
                         <form.AppField name={`adjustments[${idx}].id`}>
                           {(field) => (
-                            <field.NumberField id={`adjustments[${idx}].id`} />
+                            <field.TextField id={`adjustments[${idx}].id`} />
                           )}
                         </form.AppField>
 
@@ -258,116 +258,118 @@ export const BalanceAdjustmentTab = withForm({
                                                 ?.adjustment[recordIdx]?.type,
                                           );
 
-                                        const handleQuery = () => {
-                                          const recordId = recordIdAccessor();
-                                          const recordType =
-                                            recordTypeAccessor();
+                                         const handleQuery = () => {
+                                           const recordId = recordIdAccessor();
+                                           const recordType =
+                                             recordTypeAccessor();
 
-                                          if (
-                                            !recordId ||
-                                            typeof recordId !== "number"
-                                          ) {
-                                            return;
-                                          }
+                                           if (!recordId) {
+                                             return;
+                                           }
 
-                                          const currentData = allData();
-                                          const latest = latestData();
+                                           const numericRecordId = parseId(recordId);
+                                           if (numericRecordId === null) {
+                                             return;
+                                           }
 
-                                          let handled = false;
+                                           const currentData = allData();
+                                           const latest = latestData();
 
-                                          if (recordType === "hp") {
-                                            const currentHp = findHpById(
-                                              currentData,
-                                              recordId,
-                                            );
-                                            const latestHp = latest
-                                              ? findHpById(latest, recordId)
-                                              : null;
+                                           let handled = false;
 
-                                            if (latestHp !== null) {
-                                              form.setFieldValue(
-                                                `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
-                                                `<b>${latestHp}</b>`,
-                                              );
-                                              handled = true;
-                                            }
+                                           if (recordType === "hp") {
+                                             const currentHp = findHpById(
+                                               currentData,
+                                               numericRecordId,
+                                             );
+                                             const latestHp = latest
+                                               ? findHpById(latest, numericRecordId)
+                                               : null;
 
-                                            if (currentHp !== null) {
-                                              form.setFieldValue(
-                                                `adjustments[${idx}].adjustment[${recordIdx}].newData`,
-                                                `<b>${currentHp}</b>`,
-                                              );
-                                              handled = true;
-                                            }
-                                          } else if (recordType === "cost") {
-                                            const currentCost = formatPlayCost(
-                                              findPlayCostById(
-                                                currentData,
-                                                recordId,
-                                              ),
-                                            );
-                                            const latestCost = latest
-                                              ? formatPlayCost(
-                                                  findPlayCostById(
-                                                    latest,
-                                                    recordId,
-                                                  ),
-                                                )
-                                              : null;
+                                             if (latestHp !== null) {
+                                               form.setFieldValue(
+                                                 `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                                 `<b>${latestHp}</b>`,
+                                               );
+                                               handled = true;
+                                             }
 
-                                            if (latestCost !== null) {
-                                              form.setFieldValue(
-                                                `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
-                                                latestCost,
-                                              );
-                                              handled = true;
-                                            }
+                                             if (currentHp !== null) {
+                                               form.setFieldValue(
+                                                 `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                                 `<b>${currentHp}</b>`,
+                                               );
+                                               handled = true;
+                                             }
+                                           } else if (recordType === "cost") {
+                                             const currentCost = formatPlayCost(
+                                               findPlayCostById(
+                                                 currentData,
+                                                 numericRecordId,
+                                               ),
+                                             );
+                                             const latestCost = latest
+                                               ? formatPlayCost(
+                                                   findPlayCostById(
+                                                     latest,
+                                                     numericRecordId,
+                                                   ),
+                                                 )
+                                               : null;
 
-                                            if (currentCost !== null) {
-                                              form.setFieldValue(
-                                                `adjustments[${idx}].adjustment[${recordIdx}].newData`,
-                                                currentCost,
-                                              );
-                                              handled = true;
-                                            }
-                                          }
+                                             if (latestCost !== null) {
+                                               form.setFieldValue(
+                                                 `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                                 latestCost,
+                                               );
+                                               handled = true;
+                                             }
 
-                                          if (handled) {
-                                            return;
-                                          }
+                                             if (currentCost !== null) {
+                                               form.setFieldValue(
+                                                 `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                                 currentCost,
+                                               );
+                                               handled = true;
+                                             }
+                                           }
 
-                                          const currentDesc =
-                                            findDescriptionById(
-                                              currentData,
-                                              recordId,
-                                            );
-                                          const latestDesc = latest
-                                            ? findDescriptionById(
-                                                latest,
-                                                recordId,
-                                              )
-                                            : null;
+                                           if (handled) {
+                                             return;
+                                           }
 
-                                          if (latestDesc !== null) {
-                                            form.setFieldValue(
-                                              `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
-                                              latestDesc,
-                                            );
-                                          }
+                                           const currentDesc =
+                                             findDescriptionById(
+                                               currentData,
+                                               numericRecordId,
+                                             );
+                                           const latestDesc = latest
+                                             ? findDescriptionById(
+                                                 latest,
+                                                 numericRecordId,
+                                               )
+                                             : null;
 
-                                          if (currentDesc !== null) {
-                                            form.setFieldValue(
-                                              `adjustments[${idx}].adjustment[${recordIdx}].newData`,
-                                              currentDesc,
-                                            );
-                                          }
-                                        };
+                                           if (latestDesc !== null) {
+                                             form.setFieldValue(
+                                               `adjustments[${idx}].adjustment[${recordIdx}].oldData`,
+                                               latestDesc,
+                                             );
+                                           }
 
-                                        return (
-                                          <div class="flex gap-2">
-                                            <field.NumberField
-                                              id={`adjustments[${idx}].adjustment[${recordIdx}].id`}
-                                            />
+                                           if (currentDesc !== null) {
+                                             form.setFieldValue(
+                                               `adjustments[${idx}].adjustment[${recordIdx}].newData`,
+                                               currentDesc,
+                                             );
+                                           }
+                                         };
+
+                                         return (
+                                           <div class="flex gap-2">
+                                             <field.TextField
+                                               id={`adjustments[${idx}].adjustment[${recordIdx}].id`}
+                                             />
                                             <button
                                               type="button"
                                               class="btn btn-sm btn-ghost h-full"

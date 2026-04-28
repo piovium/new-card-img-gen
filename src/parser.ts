@@ -197,7 +197,7 @@ export const parseDescription = (
           const rawNameSplit = keyword.rawName.split("|");
           let rawName: string = rawNameSplit[0];
           if (selector && rawNameSplit.find((s) => s.startsWith(selector))) {
-            /* eslint-disable */
+            /* eslint-disable-next-line */
             rawName = rawNameSplit
               .find((s) => s.startsWith(selector))!
               .split(":")[1];

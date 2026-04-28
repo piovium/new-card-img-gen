@@ -60,3 +60,8 @@ export const nar = <A, B extends A>(
   const value = accessor();
   return cond(value) ? value : null;
 };
+
+export const parseId = (id: string | number): number | null => {
+  const num = Number(id);
+  return isNaN(num) ? null : num;
+};
