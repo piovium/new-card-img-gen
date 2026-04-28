@@ -202,6 +202,7 @@ interface AdjustmentCardListProps {
   currentIndex: () => number | null;
   onSelect: (index: number) => void;
   onAdd: () => void;
+  onSort: () => void;
 }
 
 const AdjustmentCardList = (props: AdjustmentCardListProps) => {
@@ -234,6 +235,15 @@ const AdjustmentCardList = (props: AdjustmentCardListProps) => {
           onClick={props.onAdd}
         >
           新建
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          class="btn btn-soft btn-sm"
+          onClick={props.onSort}
+        >
+          自动排序
         </button>
       </li>
     </ul>
@@ -530,6 +540,19 @@ export const BalanceAdjustmentTab = withForm({
       setCurrentAdjustmentIndex(null);
     };
 
+    const handleSort = () => {
+      form.setFieldValue("adjustments", (prev: AdjustmentData[]) => {
+        return [...prev].sort((a, b) => {
+          const aNum = parseId(a.id);
+          const bNum = parseId(b.id);
+          if (aNum === null && bNum === null) return 0;
+          if (aNum === null) return -1;
+          if (bNum === null) return 1;
+          return aNum - bNum;
+        });
+      });
+    };
+
     return (
       <div class="h-full w-full @container">
         <div class="h-full w-full flex flex-col relative @md:flex-row gap-4">
@@ -540,6 +563,7 @@ export const BalanceAdjustmentTab = withForm({
               currentIndex={currentAdjustmentIndex}
               onSelect={setCurrentAdjustmentIndex}
               onAdd={handleAddCard}
+              onSort={handleSort}
             />
           </div>
           <div class="flex-grow overflow-auto">

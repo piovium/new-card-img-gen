@@ -34,7 +34,7 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
       <div class="adjustment-card-title">
         <Text text={props.name} />
       </div>
-      <div class="dashed-line" />
+      <div class="dashed-line" bool:data-wide={props.cardFace === undefined} />
       <Show when={props.cardFace}>
         {(cardFace) => (
           <img

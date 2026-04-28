@@ -44,6 +44,10 @@
   margin: 1rem 0 0;
 }
 
+.balance-adjustment .dashed-line[data-wide] {
+  width: 100%;
+}
+
 .adjustment-card-face {
   position: absolute;
   right: -0.25rem;
