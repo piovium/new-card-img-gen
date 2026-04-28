@@ -140,6 +140,7 @@ export const parseDescription = (
     } else if (text.startsWith("REF#")) {
       const ref = text.substring(4);
       let usingKeywordId: number | null = null;
+      let selector: string | undefined;
       if (ref === "D__KEY__ELEMENT") {
         const damageType = keyMap[ref];
         if (!damageType || !DAMAGE_KEYWORD_MAP[damageType]) {
@@ -152,7 +153,13 @@ export const parseDescription = (
         continue;
       } else {
         const refType = ref[0];
-        const id = Number(ref.substring(1));
+        const selectors = ref.substring(1).split("|");
+        if (selectors.length > 2) {
+          console.warn(`Tcg description ${ref} has extra pipes`);          
+        }
+        selector = selectors[1];
+        if (selector === "nc") selector = undefined;
+        const id = Number(selectors[0]);
         let manualColor: string | undefined = undefined;
         if (refType === "K") {
           const mappedObject = keywordToEntityMap.get(id);
@@ -187,9 +194,14 @@ export const parseDescription = (
       if (usingKeywordId !== null) {
         const keyword = ctx.keywords.find((e) => e.id === usingKeywordId);
         if (keyword) {
-          const rawNameSplit = keyword.rawName.split("|s1:");
-          const rawName =
-            rawNameSplit[rawNameSplit.length - 1] ?? keyword.rawName;
+          const rawNameSplit = keyword.rawName.split("|");
+          let rawName: string = rawNameSplit[0];
+          if (selector && rawNameSplit.find((s) => s.startsWith(selector))) {
+            /* eslint-disable */
+            rawName = rawNameSplit
+              .find((s) => s.startsWith(selector))!
+              .split(":")[1];
+          }
           result.push(
             { type: "hiddenKeyword", id: usingKeywordId },
             ...parseDescription(ctx, rawName).map((token) => {
