@@ -207,7 +207,7 @@ interface AdjustmentCardListProps {
 
 const AdjustmentCardList = (props: AdjustmentCardListProps) => {
   return (
-    <ul class="menu bg-base-200 rounded-box min-h-0 overflow-auto flex-grow min-w-20 gap-1">
+    <ul class="menu bg-base-200 rounded-box min-h-0 overflow-auto flex-grow min-w-20 max-w-50 gap-1 flex-nowrap">
       <li>
         <h2 class="menu-title">调整卡牌</h2>
       </li>

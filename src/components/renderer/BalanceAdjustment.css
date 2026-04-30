@@ -92,8 +92,12 @@
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
-  text-align: justify;
+  text-align: start;
   text-indent: 0;
+}
+
+.record-content[data-justify] {
+  text-align: justify;
 }
 
 .adjustment-records[data-wide] {
@@ -137,14 +141,6 @@
 
 .record-content {
   color: #716864;
-  white-space: pre-wrap;
-  word-break: break-word;
-  text-align: left;
-  text-indent: 0;
-}
-
-.record-content[data-justify="true"] {
-  text-align: justify;
 }
 
 .record-text-light {

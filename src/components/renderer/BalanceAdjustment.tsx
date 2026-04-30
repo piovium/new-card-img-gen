@@ -167,19 +167,13 @@ const AdjustmentRecordItem = (props: AdjustmentRecordProps) => {
           <>
             <div class="record-block" bool:data-hidden={!hasOld()}>
               <img src={oldSign} class="record-sign" bool:data-hidden={!hasNew()} />
-              <div 
-                class="record-content" 
-                data-justify={["CHS", "CHT"].includes(language())}
-              >
+              <div class="record-content">
                 {parseAdjustmentText(props.record.oldData)}
               </div>
             </div>
             <div class="record-block" bool:data-hidden={!hasNew()}>
               <img src={newSign} class="record-sign" bool:data-hidden={!hasOld()} />
-              <div 
-                class="record-content" 
-                data-justify={["CHS", "CHT"].includes(language())}
-              >
+              <div class="record-content">
                 {parseAdjustmentText(props.record.newData)}
               </div>
             </div>
@@ -216,7 +210,7 @@ interface ResolvedCardData {
 }
 
 export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
-  const { allData } = useGlobalSettings();
+  const { allData, language } = useGlobalSettings();
   const processedAdjustments = createMemo(() => {
     const data = allData();
 
@@ -261,6 +255,7 @@ export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
           >
             <div
               class="adjustment-records"
+              bool:data-justify={["CHS", "CHT"].includes(language())}
               bool:data-wide={item.cardData?.cardFace === undefined}
             >
               <For each={item.adjustment.adjustment}>
