@@ -37,14 +37,17 @@ const AdjustmentCard = (props: AdjustmentCardProps) => {
       <div class="dashed-line" bool:data-wide={props.cardFace === undefined} />
       <Show when={props.cardFace}>
         {(cardFace) => (
-          <img
-            src={cardFaceUrl({ id: 0, name: "", cardFace: cardFace() })}
-            class="adjustment-card-face"
-            style={{
-              top: `${props.offset - 0.25}rem`,
-              "mask-image": `url("${BLOCK_CARD_MASK}")`,
-            }}
-          />
+          <div class="adjustment-card-face">
+            <img
+              src={cardFaceUrl({ id: 0, name: "", cardFace: cardFace() })}
+              class="adjustment-card-face-background"
+            />
+            <img
+              src={cardFaceUrl({ id: 0, name: "", cardFace: cardFace() })}
+              class="adjustment-card-face-image"
+              style={{ "margin-top": `${props.offset - 0.25}rem` }}
+            />
+          </div>
         )}
       </Show>
       {props.children}

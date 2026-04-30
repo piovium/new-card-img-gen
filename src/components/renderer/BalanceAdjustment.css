@@ -50,11 +50,34 @@
 
 .adjustment-card-face {
   position: absolute;
-  right: -0.25rem;
-  width: auto;
-  height: 45rem;
+  right: 0;
+  top: 0;
+  width: 28rem;
+  height: 100%;
+  display: grid;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 75%);
+}
+
+.adjustment-card-face-background {
+  grid-area: 1 / 1;
+  height: 110%;
+  aspect-ratio: 7 / 12;
+  max-width: max-content;
+  align-self: center;
+  justify-self: center;
+  object-fit: cover;
+  filter: blur(32px);
+  opacity: 0.9;
+}
+
+.adjustment-card-face-image {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: auto;
+  align-self: center;
   object-fit: contain;
-  mask-size: cover;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .adjustment-header {
