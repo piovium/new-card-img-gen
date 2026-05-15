@@ -1,6 +1,6 @@
 import { createSignal, createMemo } from "solid-js";
 import { For, Show } from "solid-js";
-import type { SkillRawData } from "@gi-tcg/static-data";
+import type { SkillRawData } from "@gi-tcg/assets-manager";
 import {
   type AppConfig,
   type RenderContext,

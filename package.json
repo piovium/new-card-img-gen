@@ -3,12 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">= 26.0.0"
+  },
+  "packageManager": "pnpm@11.0.9",
   "scripts": {
     "check": "tsc -b --noEmit",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "start": "bun scripts/server.ts"
+    "start": "node scripts/server.ts"
   },
   "dependencies": {
     "@solid-primitives/storage": "^4.3.3",
@@ -18,22 +22,28 @@
     "modern-screenshot": "^4.6.6",
     "remeda": "^2.32.0",
     "semver": "^7.7.3",
-    "solid-js": "^1.9.9",
+    "solid-js": "^1.9.12",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@gi-tcg/static-data": "^0.17.4",
+    "@gi-tcg/assets-manager": "^0.19.1",
+    "@hono/node-server": "^2.0.2",
+    "@hono/standard-validator": "^0.2.2",
+    "@sinclair/typebox": "^0.34.49",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/semver": "^7.7.1",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",
-    "elysia": "^1.4.12",
+    "arktype": "^2.2.0",
+    "csstype": "^3.1.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-only-warn": "^1.2.1",
     "eslint-plugin-solid": "^0.13.1",
     "exit-hook": "^5.0.0",
+    "hono": "^4.12.18",
     "puppeteer-core": "^24.25.0",
     "type-fest": "^5.0.1",
-    "typescript": "~5.8.3",
+    "typescript": "~6.0.2",
     "vite": "^7.1.6",
     "vite-plugin-solid": "^2.11.8"
   }

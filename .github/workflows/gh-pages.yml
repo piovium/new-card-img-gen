@@ -18,22 +18,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
         with:
-          bun-version: latest
-
+          node-version: 26
+          cache: pnpm
       - name: Run Build
         env:
           VITE_APP_BASE: /new-card-img-gen/
         run: |
-          bun install
-          bun run build
+          pnpm install --frozen-lockfile
+          pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

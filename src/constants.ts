@@ -6,7 +6,10 @@ import type {
   OverrideData,
   AllRawData,
 } from "./types";
-import { defineOverride } from "./override";
+import { defineOverride } from "./override.ts";
+
+// @ts-expect-error Node.js types
+export const BASE_URL = (import.meta.env?.BASE_URL || (typeof process !== "undefined" ? process.env.BASE_URL : "")) || "";
 
 export const CHILDREN_CONFIG: Record<number, string> = {
   11154: "$[C111159],$[C111152],$[C111153],$[C111154],$[C111155]", // 爱可菲 P
@@ -105,51 +108,51 @@ export const COST_READONLY_ENTITIES = [
 ];
 
 export const CARD_NORMAL_FRAME = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/card_frame_normal.png`;
 export const CARD_LEGEND_FRAME = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/card_frame_legend.png`;
 export const KEYWORD_CARD_FRAME = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/keyword_card_frame.png`;
 export const KEYWORD_CARDBACK_REPEAT = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/card_back_repeat.png`;
 export const KEYWORD_CARDBACK_BOTTOM = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/card_back_bottom.png`;
 export const PAGE_TITLE_ICON = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/pagetitle.png`;
 export const BLOCK_CARD_MASK = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/block_card_mask.png`;
 export const NEW_SIGN_CHS = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/new_CHS.png`;
-export const NEW_SIGN_EN = `${import.meta.env.BASE_URL}assets/frame/new_EN.png`;
+export const NEW_SIGN_EN = `${BASE_URL}assets/frame/new_EN.png`;
 export const OLD_SIGN_CHS = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/frame/old_CHS.png`;
-export const OLD_SIGN_EN = `${import.meta.env.BASE_URL}assets/frame/old_EN.png`;
+export const OLD_SIGN_EN = `${BASE_URL}assets/frame/old_EN.png`;
 
 export const AVATAR_CARD_HP = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/UI_TeyvatCard_LifeBg.png`;
 export const AVATAR_CARD_ENERGY = `${
-  import.meta.env.BASE_URL
+  BASE_URL
 }assets/UI_TeyvatCard_LifeBg3.png`;
 export const SPECIAL_ENERGY_MAP: Record<
   number,
   { type: string; count: number }
 > = {
   1315: {
-    type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`,
+    type: `${BASE_URL}assets/UI_TeyvatCard_LifeBg_Mavuika1.png`,
     count: 3,
   },
   1116: {
-    type: `${import.meta.env.BASE_URL}assets/UI_TeyvatCard_LifeBg_SKK01.png`,
+    type: `${BASE_URL}assets/UI_TeyvatCard_LifeBg_SKK01.png`,
     count: 1,
   },
 };
@@ -410,93 +413,93 @@ export const ELEMENT_TAG_TO_KEYWORD_ID: Record<string, number> = {
 
 export const DESCRIPTION_ICON_IMAGES = {
   4007: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_Keyword_Shield.png`,
   },
   2100: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Physics.png`,
   },
   2101: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Ice.png`,
   },
   2102: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Water.png`,
   },
   2103: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Fire.png`,
   },
   2104: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Electric.png`,
   },
   2105: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Wind.png`,
   },
   2106: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Rock.png`,
   },
   2107: {
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Element_Grass.png`,
   },
   1101: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Ice.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Ice.png`,
   },
   1102: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Water.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Water.png`,
   },
   1103: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Fire.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Fire.png`,
   },
   1104: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Elec.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Elec.png`,
   },
   1105: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Wind.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Wind.png`,
   },
   1106: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Rock.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Rock.png`,
   },
   1107: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Grass.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Grass.png`,
   },
   1108: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Same.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Same.png`,
   },
   1109: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Diff.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Diff.png`,
   },
   1110: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_Keyword_Energy.png`,
   },
   1111: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_Any.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_DiceL_Any.png`,
   },
   1112: {
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Legend.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_Keyword_Legend.png`,
   },
   4008: {
     //  ###非官方###
     imageUrl: `${
-      import.meta.env.BASE_URL
+      BASE_URL
     }assets/UI_Gcg_Keyword_Fighting_Spirit.png`,
   },
   4009: {
     //  ###非官方###
-    imageUrl: `${import.meta.env.BASE_URL}assets/UI_Gcg_Keyword_Energy_SKK.png`,
+    imageUrl: `${BASE_URL}assets/UI_Gcg_Keyword_Energy_SKK.png`,
   },
   3003: { tagIcon: "GCG_TAG_WEAPON" },
   3004: { tagIcon: "GCG_TAG_ARTIFACT" },

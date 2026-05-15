@@ -1,10 +1,10 @@
 import { For, Show } from "solid-js";
-import type { PlayCost } from "@gi-tcg/static-data";
-import { COST_TYPE_IMG_NAME_MAP } from "../../constants";
+import type { PlayCost } from "@gi-tcg/assets-manager";
+import { BASE_URL, COST_TYPE_IMG_NAME_MAP } from "../../constants";
 import "./Cost.css";
 
 const diceImageUrl = (type: string) =>
-  `${import.meta.env.BASE_URL}assets/UI_Gcg_DiceL_${
+  `${BASE_URL}assets/UI_Gcg_DiceL_${
     COST_TYPE_IMG_NAME_MAP[type]
   }_Glow_HD.png`;
 

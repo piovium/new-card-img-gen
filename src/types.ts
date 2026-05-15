@@ -5,11 +5,15 @@ import type {
   KeywordRawData,
   PlayCost,
   SkillRawData,
-} from "@gi-tcg/static-data";
+} from "@gi-tcg/assets-manager";
 import type { Accessor } from "solid-js";
 
-type AllRawDataImpl = typeof import("@gi-tcg/static-data");
-export interface AllRawData extends AllRawDataImpl {}
+export interface AllRawData {
+  keywords: KeywordRawData[];
+  characters: CharacterRawData[];
+  entities: EntityRawData[];
+  actionCards: ActionCardRawData[];
+}
 
 export type Language = "EN" | "CHS";
 export type Version =

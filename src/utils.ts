@@ -1,5 +1,5 @@
 import type { Accessor } from "solid-js";
-import { TYPE_TAG_IMG_NAME_MAP } from "./constants";
+import { BASE_URL, TYPE_TAG_IMG_NAME_MAP } from "./constants";
 import type { AllUnionFields } from "type-fest";
 import type {
   ActionCardRawData,
@@ -13,10 +13,10 @@ import { ASSETS_API_ENDPOINT } from "./shared";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")
-    ? `${import.meta.env.BASE_URL}assets/tags/UI_Gcg_Buff_Common_${
+    ? `${BASE_URL}assets/tags/UI_Gcg_Buff_Common_${
         TYPE_TAG_IMG_NAME_MAP[tag]
       }.png`
-    : `${import.meta.env.BASE_URL}assets/tags/UI_Gcg_Tag_${
+    : `${BASE_URL}assets/tags/UI_Gcg_Tag_${
         TYPE_TAG_IMG_NAME_MAP[tag]
       }.png`;
 export const assetsImageUrl = (imageName: string) =>

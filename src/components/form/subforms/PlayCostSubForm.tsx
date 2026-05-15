@@ -1,4 +1,4 @@
-import type { PlayCost } from "@gi-tcg/static-data";
+import type { PlayCost } from "@gi-tcg/assets-manager";
 import {
   createEffect,
   createMemo,

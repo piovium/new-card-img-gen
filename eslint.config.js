@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 import solid from "eslint-plugin-solid/configs/typescript.js";
 import * as tsParser from "@typescript-eslint/parser";
+import "eslint-plugin-only-warn";
 
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
@@ -12,7 +13,6 @@ const compat = new FlatCompat({ resolvePluginsRelativeTo: __dirname });
 export default [
   js.configs.recommended,
   ...compat.extends("plugin:@typescript-eslint/recommended"),
-  ...compat.plugins("only-warn"),
   {
     files: ["src/**/*.{ts,tsx}"],
     ...solid,

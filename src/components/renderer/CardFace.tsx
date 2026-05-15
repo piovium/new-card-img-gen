@@ -1,6 +1,7 @@
 import type { JSX } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import {
+  BASE_URL,
   CARD_LEGEND_FRAME,
   CARD_NORMAL_FRAME,
 } from "../../constants";
@@ -18,7 +19,7 @@ export const CardFace = (props: {
   return (
     <div class={`card-face-component ${props.class ?? ""}`}>
       <div class="card-back">
-        <img src={`${import.meta.env.BASE_URL}assets/cardbacks/${cardbackImage()}.png`} class="card-back-image" />
+        <img src={`${BASE_URL}assets/cardbacks/${cardbackImage()}.png`} class="card-back-image" />
         <img src={CARD_NORMAL_FRAME} class="card-back-frame" /> 
       </div>
       <div class="card-face">

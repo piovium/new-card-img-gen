@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-declare module "@gi-tcg/static-data" {
+declare module "@gi-tcg/assets-manager" {
   interface CharacterRawData {
     cardFaceUrl?: string;
     iconUrl?: string;

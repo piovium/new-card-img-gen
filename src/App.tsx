@@ -25,7 +25,7 @@ import {
 } from "./mock_data";
 import { ASSETS_API_ENDPOINT, getData } from "./shared";
 import { applyOverride } from "./override";
-import { overrideData } from "./constants";
+import { BASE_URL, overrideData } from "./constants";
 import { makePersisted } from "@solid-primitives/storage";
 import * as R from "remeda";
 
@@ -68,7 +68,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     language: "CHS",
     version: "latest",
     authorName: "❤︎ From「雨酱牌」",
-    authorImageUrl: `${import.meta.env.BASE_URL}vite.svg`,
+    authorImageUrl: `${BASE_URL}vite.svg`,
     cardbackImage: "UI_Gcg_CardBack_NodKrai",
     displayId: true,
     displayStory: true,
