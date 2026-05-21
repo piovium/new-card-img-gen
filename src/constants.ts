@@ -41,6 +41,7 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   21023: "_", // 女士 Q
   21024: "$[C121021],$[K1013],$[S63011],$[S63012],$[S63013],$[C163011]", // 女士 P
   221031: "$[C121022]", // 无相冰 天赋
+  21052: "$[C121051],$[C121054],$[C121055],$[C121056],$[C121057],$[C121058],$[C121059],$[C203],$[C121052],$[C172]", // 灵觉隐修的迷者 E
   22012: "$[C122011],$[C122012],$[C122013]", // 纯水精灵 E1
   22013: "_", // 纯水精灵 E2
   22052: "_", // 水丘丘 E
@@ -69,7 +70,7 @@ export const SHOWN_KEYWORDS = [
   66, // 冒险
   67, // 元素幻变
   3001, // 月感电
-  3002, // 当前元素骰费用
+  // 3002, // 当前元素骰费用
   3009, // 月绽放
 ];
 
@@ -105,6 +106,13 @@ export const COST_READONLY_ENTITIES = [
   333024,
   333025,
   333026, // 奇瑰之汤
+  17126, // 奈芙尔 幻戏
+  121054,
+  121055,
+  121056,
+  121057,
+  121058,
+  121059, // 灵觉隐修的迷者 浮彩
 ];
 
 export const CARD_NORMAL_FRAME = `${
@@ -695,6 +703,10 @@ export const VERSION_REPLACE_STRS: Record<string, Record<Language, string>> = {
     CHS: "「月之七」",
     EN: "Luna VII",
   },
+  "6.7": {
+    CHS: "「月之八」",
+    EN: "Luna VIII",
+  },
 };
 
 export const ADVENTURE_PLACE_ADDITIONAL_DESC: Record<Language, string> = {
@@ -791,6 +803,15 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
+    defineOverride<CharacterRawData>(null, null, {
+      id: 2504, // 黑蛇骑士·斩风之剑
+      skills: [
+        {
+          id: 25045, // 黑蛇骑士·斩风之剑 舍身架势 修复引用错误 beta v1 ###可能会在未来修复###
+          rawDescription: (before) => before.replace("$[S25047]", "$[S25046]"),
+        },
+      ],
+    }),
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
@@ -806,13 +827,31 @@ export const overrideData: OverrideData<AllRawData> = {
       rawDescription: delicateSerpentsSubtlety,
     }),
     defineOverride<EntityRawData>(null, null, {
-      id: 117111, // 月七v1图标错误，我猜的
+      id: 117111, // 菈乌玛 霜林圣域 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
       buffIcon: "UI_Gcg_Buff_Lauma_S",
     }),
     defineOverride<EntityRawData>(null, null, {
-      id: 117112,
+      id: 117112, // 菈乌玛 苍色祷歌 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
       buffIcon: "UI_Gcg_Buff_Lauma_Q",
     }),
+    // beta v1 新幻变缺少描述，等待修复
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 303101,
+      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1102}<color=#80C0FFFF>水元素骰</color>和2个{SPRITE_PRESET#1105}<color=#80FFD7FF>风元素骰</color>。\\n" + before,
+    }),
+        defineOverride<ActionCardRawData>(null, null, {
+      id: 303102,
+      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1102}<color=#80C0FFFF>水元素骰</color>和2个{SPRITE_PRESET#1105}<color=#80FFD7FF>风元素骰</color>。\\n" + before,
+    }),
+        defineOverride<ActionCardRawData>(null, null, {
+      id: 303111,
+      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1104}<color=#FFACFFFF>雷元素骰</color>和2个{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>。\\n" + before,
+    }),
+        defineOverride<ActionCardRawData>(null, null, {
+      id: 3003112,
+      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1104}<color=#FFACFFFF>雷元素骰</color>和2个{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>。\\n" + before,
+    }),
+
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -830,6 +869,10 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 121055, // 灵觉隐修的迷者 浮彩·多重 修复引用错误 beta v1 ###可能会在未来修复###
+      rawDescription: (before) => before.replace("$[C1121052]", "$[C121052]"),
     }),
   ],
 };
@@ -1033,4 +1076,8 @@ export const RELATED_ENTITIES: Record<number, number[]> = {
   333030: [172, 209], // 打磨利刃
   2605: [126054], // 力场操控
   330013: [300010], // 另一侧的霜月·生效中
+  2105: [211052, 211053, 211054, 211055, 211056, 211057], // 灵觉隐修的迷者 浮彩（生效中）
+  332064: [303248], // 科研的动力（生效中）
+  332063: [303249], // 小小灵蕈大幻戏（生效中）
+  333031: [303324], // 白灵果派（生效中）
 } as Record<number, number[]>;

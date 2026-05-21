@@ -1,6 +1,6 @@
 import type { AllRawData, Language } from "./types";
 
-export const ASSETS_API_ENDPOINT = `https://static-data.7shengzhaohuan.online/api/v4`;
+export const ASSETS_API_ENDPOINT = `https://static-data.piovium.org/api/v4`;
 
 export const getData = async (version: string, language: Language) => {
   const data: Partial<AllRawData> = {};
