@@ -803,12 +803,23 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
-    defineOverride<CharacterRawData>(null, null, {
-      id: 2504, // 黑蛇骑士·斩风之剑
+    defineOverride<CharacterRawData>(null, "CHS", {
+      id: 1712, // 奈芙尔
       skills: [
         {
-          id: 25045, // 黑蛇骑士·斩风之剑 舍身架势 修复引用错误 beta v1 ###可能会在未来修复###
-          rawDescription: (before) => before.replace("$[S25047]", "$[S25046]"),
+          id: 17126, // 奈芙尔 幻戏 keyword描述与skill描述不同 ###可能会在未来修复###
+          rawDescription: (before) =>
+            before + "\\n使用此技能不会获得<color=#FFFFFFFF>{SPRITE_PRESET#1110}充能</color>。",
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, "EN", {
+      id: 1712, // 奈芙尔
+      skills: [
+        {
+          id: 17126,
+          rawDescription: (before) =>
+            before + "\\nUsing this skill will not grant <color=#FFFFFFFF>{SPRITE_PRESET#1110}Energy</color>.",
         },
       ],
     }),
@@ -834,24 +845,6 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 117112, // 菈乌玛 苍色祷歌 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
       buffIcon: "UI_Gcg_Buff_Lauma_Q",
     }),
-    // beta v1 新幻变缺少描述，等待修复
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 303101,
-      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1102}<color=#80C0FFFF>水元素骰</color>和2个{SPRITE_PRESET#1105}<color=#80FFD7FF>风元素骰</color>。\\n" + before,
-    }),
-        defineOverride<ActionCardRawData>(null, null, {
-      id: 303102,
-      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1102}<color=#80C0FFFF>水元素骰</color>和2个{SPRITE_PRESET#1105}<color=#80FFD7FF>风元素骰</color>。\\n" + before,
-    }),
-        defineOverride<ActionCardRawData>(null, null, {
-      id: 303111,
-      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1104}<color=#FFACFFFF>雷元素骰</color>和2个{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>。\\n" + before,
-    }),
-        defineOverride<ActionCardRawData>(null, null, {
-      id: 3003112,
-      rawDescription: (before) => "<color=#FFFFFFFF>投掷阶段：</color>总是投出2个{SPRITE_PRESET#1104}<color=#FFACFFFF>雷元素骰</color>和2个{SPRITE_PRESET#1107}<color=#7EC236FF>草元素骰</color>。\\n" + before,
-    }),
-
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
