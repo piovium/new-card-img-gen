@@ -862,11 +862,7 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 121055, // 灵觉隐修的迷者 浮彩·多重 修复引用错误 beta v1 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("$[C1121052]", "$[C121052]"),
-    }),
+    })
   ],
 };
 
@@ -1069,6 +1065,7 @@ export const RELATED_ENTITIES: Record<number, number[]> = {
   333030: [172, 209], // 打磨利刃
   2605: [126054], // 力场操控
   330013: [300010], // 另一侧的霜月·生效中
+  1712: [117122], // 奈芙尔
   2105: [221052, 221053, 221054, 221055, 221056, 221057], // 灵觉隐修的迷者 浮彩（生效中）
   332064: [303248], // 科研的动力（生效中）
   332063: [303249], // 小小灵蕈大幻戏（生效中）
