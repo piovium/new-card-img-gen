@@ -72,6 +72,7 @@ const app = new Hono()
       error: "message" in error ? error.message : String(error),
     });
   })
+  .get('/health', (c) => c.text('ok'))
   .post("/render", sValidator("json", inputSchema), async ({ req }) => {
     const body = await req.json();
     const language = body.language || Language.CHS;
