@@ -330,7 +330,7 @@ export const App = () => {
 
   const renderImage = async (data: RenderAppOption) => {
     setConfig(data);
-    const blob = await exportImage();
+    const blob = await exportImage(data.render ?? {});
     if (!blob) {
       throw new Error("导出图片失败");
     }
