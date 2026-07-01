@@ -86,12 +86,13 @@ export const Renderer = (props: AppConfig) => {
       const collected = data.characters.find((c) => c.id === props.characterId);
       if (collected) {
         character = parseCharacter(renderContext, collected);
-        const talent = data.actionCards.find(
+        const talents = data.actionCards.filter(
           (ac) => ac.relatedCharacterId === collected.id,
         );
-        if (talent) {
-          actionCards.push(parseActionCard(renderContext, talent));
-        }
+        console.log(talents)
+        actionCards.push(
+          ...talents.map((card) => parseActionCard(renderContext, card)),
+        );
       }
     } else if (mode === "singleActionCard") {
       const actionCard = data.actionCards.find(
