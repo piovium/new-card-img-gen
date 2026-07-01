@@ -134,6 +134,7 @@ export interface FormValue {
     displayStory: boolean;
     watermarkText: string;
     debug: boolean;
+    includeTalent: boolean;
   };
   newItems: {
     characters: NewCharacterData[];

@@ -43,6 +43,7 @@ export interface AppConfig {
   adjustments?: AdjustmentData[];
   versionedActionCardSelection?: boolean[];
   debug?: boolean;
+  includeTalent?: boolean;
 }
 
 export interface ParsedCharacter extends CharacterRawData {

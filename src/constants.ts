@@ -229,6 +229,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_SNEZHNAYA: "至冬",
     GCG_TAG_NATION_KHAENRIAH: "坎瑞亚",
     GCG_TAG_NATION_COSMIC_CALAMITY: "寰宇劫灭",
+    GCG_TAG_HEXENZIRKEL: "魔导",
     GCG_TAG_CAMP_EREMITE: "镀金旅团",
     GCG_TAG_CAMP_FATUI: "愚人众",
     GCG_TAG_CAMP_MONSTER: "魔物",
@@ -298,6 +299,7 @@ export const TYPE_TAG_TEXT_MAP: Record<Language, Record<string, string>> = {
     GCG_TAG_NATION_SNEZHNAYA: "Snezhnaya",
     GCG_TAG_NATION_KHAENRIAH: "Khaenri'ah",
     GCG_TAG_NATION_COSMIC_CALAMITY: "Cosmic Calamity",
+    GCG_TAG_HEXENZIRKEL: "Hexerei",
     GCG_TAG_CAMP_EREMITE: "The Eremites",
     GCG_TAG_CAMP_FATUI: "Fatui",
     GCG_TAG_CAMP_MONSTER: "Monster",
@@ -380,6 +382,7 @@ export const TYPE_TAG_IMG_NAME_MAP: Record<string, string> = {
   GCG_TAG_NATION_NODKRAI: "Faction_NodKrai",
   GCG_TAG_NATION_SNEZHNAYA: "Faction_Snezhnaya",
   GCG_TAG_NATION_COSMIC_CALAMITY: "Faction_CosmicCalamity",
+  GCG_TAG_HEXENZIRKEL: "Hexenzirkel",
   GCG_TAG_CAMP_EREMITE: "Faction_Eremite",
   GCG_TAG_CAMP_FATUI: "Faction_Fatui",
   GCG_TAG_CAMP_MONSTER: "Faction_Monster",
@@ -844,6 +847,10 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<EntityRawData>(null, null, {
       id: 117112, // 菈乌玛 苍色祷歌 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
       buffIcon: "UI_Gcg_Buff_Lauma_Q",
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
+      buffIcon: "UI_Gcg_Buff_EffigyWater_S",
     }),
   ],
   actionCards: [

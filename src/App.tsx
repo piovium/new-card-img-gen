@@ -75,6 +75,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     mirroredLayout: false,
     watermarkText: "",
     debug: false,
+    includeTalent: false,
   },
   newItems: INITIAL_NEW_ITEMS,
   adjustments: [],

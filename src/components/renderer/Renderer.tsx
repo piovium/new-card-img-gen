@@ -89,7 +89,7 @@ export const Renderer = (props: AppConfig) => {
         const talents = data.actionCards.filter(
           (ac) => ac.relatedCharacterId === collected.id,
         );
-        console.log(talents)
+        console.log(talents);
         actionCards.push(
           ...talents.map((card) => parseActionCard(renderContext, card)),
         );
@@ -108,7 +108,7 @@ export const Renderer = (props: AppConfig) => {
             (ac) =>
               ac.sinceVersion === version &&
               (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-              !ac.tags.includes("GCG_TAG_TALENT"),
+              (props.includeTalent || !ac.tags.includes("GCG_TAG_TALENT")),
           )
           .filter(
             (_, idx) => props.versionedActionCardSelection?.[idx] ?? true,

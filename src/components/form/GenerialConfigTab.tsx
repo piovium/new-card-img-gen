@@ -23,6 +23,9 @@ export const GeneralConfigTab = withForm({
     const currentVersion = form.useStore(
       (state) => state.values.general.version,
     );
+    const includeTalent = form.useStore(
+      (state) => state.values.general.includeTalent,
+    );
     const readonlyVersion = createMemo(
       () =>
         currentVersion() !== "latest" &&
@@ -51,7 +54,8 @@ export const GeneralConfigTab = withForm({
             (ac) =>
               ac.sinceVersion === currentVersion() &&
               (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-              !ac.tags.includes("GCG_TAG_TALENT"),
+              (includeTalent() ||
+                !ac.tags.includes("GCG_TAG_TALENT")),
           )
           .map((ac) => ac.name);
         return collected;
@@ -124,6 +128,23 @@ export const GeneralConfigTab = withForm({
             <field.CheckboxListField
               options={versionedActionCards()}
               hidden={!isVersionedActionCardsMode()}
+            />
+          )}
+        </form.AppField>
+
+        <label
+          class="fieldset-legend"
+          classList={{ hidden: !isVersionedActionCardsMode() }}
+          for="general.includeTalent"
+        >
+          包含天赋牌
+        </label>
+        <form.AppField name="general.includeTalent">
+          {(field) => (
+            <field.ToggleField
+              class="self-center"
+              classList={{ hidden: !isVersionedActionCardsMode() }}
+              id="general.includeTalent"
             />
           )}
         </form.AppField>
