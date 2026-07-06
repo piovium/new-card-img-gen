@@ -842,22 +842,18 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 117111, // 菈乌玛 霜林圣域 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
-      buffIcon: "UI_Gcg_Buff_Lauma_S",
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 117112, // 菈乌玛 苍色祷歌 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
-      buffIcon: "UI_Gcg_Buff_Lauma_Q",
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
-      buffIcon: "UI_Gcg_Buff_EffigyWater_S",
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 113174, // 杜林天赋 黑蚀之龙（生效中） 修复引用错误 ###可能会在未来修复###
-      rawDescription: (before) => before.replace("$[C13172]", "$[C113172]"),
-    }),
+    // defineOverride<EntityRawData>(null, null, {
+    //   id: 117111, // 菈乌玛 霜林圣域 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
+    //   buffIcon: "UI_Gcg_Buff_Lauma_S",
+    // }),
+    // defineOverride<EntityRawData>(null, null, {
+    //   id: 117112, // 菈乌玛 苍色祷歌 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
+    //   buffIcon: "UI_Gcg_Buff_Lauma_Q",
+    // }),
+    // defineOverride<EntityRawData>(null, null, {
+    //   id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
+    //   buffIcon: "UI_Gcg_Buff_EffigyWater_S",
+    // }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
