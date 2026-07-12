@@ -16,5 +16,5 @@ RUN pnpm install --frozen-lockfile && pnpm build
 ENV NODE_ENV=production \
     CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
-EXPOSE 1337 3000
+EXPOSE 3000
 CMD ["pnpm", "start"]

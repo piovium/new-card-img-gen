@@ -3,5 +3,7 @@ services:
     build: .
     restart: unless-stopped
     shm_size: "2gb"
+    ports:
+      - "3000:3000"
     environment:
       - HOSTNAME=localhost
