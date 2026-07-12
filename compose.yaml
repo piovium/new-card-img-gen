@@ -2,9 +2,6 @@ services:
   card-img-renderer:
     build: .
     restart: unless-stopped
-    shm_size: '2gb'
-    ports:
-      - '3000:3000'
-      - '1337:1337'
+    shm_size: "2gb"
     environment:
       - HOSTNAME=localhost
