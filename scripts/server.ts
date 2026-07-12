@@ -36,7 +36,8 @@ const browser = process.env.CHROMIUM_BROWSER_URL
       args: ["--no-sandbox"],
     });
 const page = await browser.newPage();
-await page.goto(address, { waitUntil: "networkidle0" });
+await page.goto(address, { waitUntil: "domcontentloaded" });
+await page.waitForFunction(() => typeof window.renderCardImage === "function");
 
 const Language = {
   CHS: "CHS",
