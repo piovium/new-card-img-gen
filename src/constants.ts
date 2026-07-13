@@ -43,7 +43,7 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   21023: "_", // 女士 Q
   21024: "$[C121021],$[K1013],$[S63011],$[S63012],$[S63013],$[C163011]", // 女士 P
   221031: "$[C121022]", // 无相冰 天赋
-  21052: "$[C121051],$[C121054],$[C121055],$[C121056],$[C121057],$[C121058],$[C121059],$[C203],$[C121052],$[C172]", // 灵觉隐修的迷者 E
+  21052: "$[C121051],$[C121054],$[C121055],$[C121056],$[C121057],$[C121058],$[C121059],$[C203],$[C121052],$[C172],$[C202]", // 灵觉隐修的迷者 E
   22012: "$[C122011],$[C122012],$[C122013]", // 纯水精灵 E1
   22013: "_", // 纯水精灵 E2
   22052: "_", // 水丘丘 E
@@ -842,6 +842,10 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 221057, // 浮彩·迅影 修复引用错误
+      rawDescription: (before) => before.replace("$[C117121]", "$[C202]"),
+    }),
     // defineOverride<EntityRawData>(null, null, {
     //   id: 117111, // 菈乌玛 霜林圣域 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
     //   buffIcon: "UI_Gcg_Buff_Lauma_S",
@@ -871,7 +875,11 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
-    })
+    }),
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 121059, // 浮彩·迅影 修复引用错误
+      rawDescription: (before) => before.replace("$[C117121]", "$[C202]"),
+    }),
   ],
 };
 
