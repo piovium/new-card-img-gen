@@ -842,10 +842,6 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111162, // 丝柯克 七相一闪 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 221057, // 浮彩·迅影 修复引用错误
-      rawDescription: (before) => before.replace("$[C117121]", "$[C202]"),
-    }),
     // defineOverride<EntityRawData>(null, null, {
     //   id: 117111, // 菈乌玛 霜林圣域 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
     //   buffIcon: "UI_Gcg_Buff_Lauma_S",
@@ -875,10 +871,6 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
-    }),
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 121059, // 浮彩·迅影 修复引用错误
-      rawDescription: (before) => before.replace("$[C117121]", "$[C202]"),
     }),
   ],
 };
