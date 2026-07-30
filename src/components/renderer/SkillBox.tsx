@@ -6,6 +6,7 @@ import { Cost } from "./Cost";
 import { Children } from "./Children";
 import { Description } from "./Token";
 import { Text } from "./Text";
+import { CodeBlock } from "./CodeBlock";
 import "./SkillBox.css";
 import { iconUrl } from "../../utils";
 
@@ -40,6 +41,7 @@ export const SkillBox = (props: { skill: ParsedSkill }) => {
         <Show when={skill().children.length > 0}>
           <Children children={skill().children} />
         </Show>
+        <CodeBlock id={skill().id} />
       </div>
     </Show>
   );

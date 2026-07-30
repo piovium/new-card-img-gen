@@ -18,6 +18,7 @@ import {
 } from "../../constants";
 import { cardFaceUrl, type AnyChild } from "../../utils";
 import { Text } from "./Text";
+import { CodeBlock } from "./CodeBlock";
 import "./Children.css";
 
 export const Children = (props: { children: ParsedChild[] }) => {
@@ -120,6 +121,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     }
                   />
                 </div>
+                <CodeBlock id={child.id} />
               </div>
             </div>
           );

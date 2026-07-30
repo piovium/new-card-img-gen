@@ -1,4 +1,10 @@
-import { createSignal, createResource, Show, onMount } from "solid-js";
+import {
+  createMemo,
+  createSignal,
+  createResource,
+  Show,
+  onMount,
+} from "solid-js";
 import {
   type AppConfig,
   type AllRawData,
@@ -23,11 +29,19 @@ import {
   MOCK_NEW_ENTITIES,
   MOCK_NEW_KEYWORDS,
 } from "./mock_data";
-import { ASSETS_API_ENDPOINT, getData } from "./shared";
+import {
+  ASSETS_API_ENDPOINT,
+  getCodeAnalyzerResults,
+  getData,
+} from "./shared";
 import { applyOverride } from "./override";
 import { BASE_URL, overrideData } from "./constants";
 import { makePersisted } from "@solid-primitives/storage";
 import * as R from "remeda";
+import {
+  indexCodeAnalyzerResults,
+  type CodeAnalyzerResult,
+} from "./codeAnalyzer";
 
 export interface RenderConfig {
   format?: "png" | "jpeg" | "webp";
@@ -130,11 +144,13 @@ export const App = () => {
   );
   const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
+  const [codeAnalyzerWarning, setCodeAnalyzerWarning] = createSignal<string>();
   const remoteFetched = {
     version: initialFormValue.general.version,
     language: initialFormValue.general.language,
     data: null as AllRawData | null,
   };
+  let cachedCodeAnalyzerResults: CodeAnalyzerResult[] | null = null;
   const onSubmitForm = async (newFormValue: FormValue) => {
     if (import.meta.env.DEV) {
       console.log(newFormValue);
@@ -156,14 +172,48 @@ export const App = () => {
     const shouldUpdateData = !(
       prevVersion === newVersion && prevLanguage === newLanguage
     );
+    setCodeAnalyzerWarning();
     try {
-      if (shouldUpdateData || !remoteFetched.data) {
+      const shouldFetchData = shouldUpdateData || !remoteFetched.data;
+      const shouldFetchCode =
+        newFormValue.general.debug && !cachedCodeAnalyzerResults;
+      if (shouldFetchData || shouldFetchCode) {
         setLoading(true);
+      }
+
+      const dataPromise = shouldFetchData
+        ? getData(newVersion, newLanguage)
+        : Promise.resolve(remoteFetched.data!);
+      const codeAnalyzerPromise = shouldFetchCode
+        ? getCodeAnalyzerResults()
+            .then((results) => {
+              cachedCodeAnalyzerResults = results;
+              return results;
+            })
+            .catch((error: unknown) => {
+              console.error(error);
+              const message =
+                error instanceof Error ? error.message : String(error);
+              setCodeAnalyzerWarning(
+                `实现代码加载失败，已跳过 Code 区块：${message}`,
+              );
+              return undefined;
+            })
+        : Promise.resolve(
+            newFormValue.general.debug
+              ? cachedCodeAnalyzerResults || undefined
+              : undefined,
+          );
+
+      if (shouldFetchData) {
         remoteFetched.version = newVersion;
         remoteFetched.language = newLanguage;
-        // fetch new data
-        remoteFetched.data = await getData(newVersion, newLanguage);
       }
+      const [remoteData, codeAnalyzerResults] = await Promise.all([
+        dataPromise,
+        codeAnalyzerPromise,
+      ]);
+      remoteFetched.data = remoteData;
 
       const betaVersion = "v9999.0.0" as Version;
       const latestVersion = versionList().at(-1) ?? betaVersion;
@@ -240,6 +290,7 @@ export const App = () => {
         adjustments: newFormValue.adjustments,
         versionedActionCardSelection:
           newFormValue.versionedActionCardSelection,
+        codeAnalyzerResults,
       });
       setMobilePreviewing(true);
     } catch (e) {
@@ -310,6 +361,9 @@ export const App = () => {
   let previewContainer!: HTMLDivElement;
   const [renderMount, setRenderMount] = createSignal<HTMLElement>();
   const [mobilePreviewing, setMobilePreviewing] = createSignal(false);
+  const codeAnalyzerIndex = createMemo(() =>
+    indexCodeAnalyzerResults(config()?.codeAnalyzerResults),
+  );
 
   onMount(async () => {
     setRenderMount(previewContainer);
@@ -353,6 +407,7 @@ export const App = () => {
         displayStory: () => !!config()?.displayStory,
         displayId: () => !!config()?.displayId,
         debug: () => !!config()?.debug,
+        codeAnalyzerIndex,
       }}
     >
       <div
@@ -363,6 +418,11 @@ export const App = () => {
           <header class="flex flex-row prose items-center m-4 gap-4">
             <h1 class="mb-0">卡图生成</h1>
           </header>
+          <Show when={codeAnalyzerWarning()}>
+            <div class="alert alert-warning mx-4 mb-2" role="alert">
+              <span>{codeAnalyzerWarning()}</span>
+            </div>
+          </Show>
           <Forms
             initialValue={initialFormValue}
             versionList={versionList.state === "ready" ? versionList() : []}

@@ -1,7 +1,11 @@
 services:
   card-img-renderer:
-    build: .
+    build:
+      context: .
+      args:
+        DATA_CODE_ANALYZER_RESULT_ENDPOINT: ${DATA_CODE_ANALYZER_RESULT_ENDPOINT:-https://play.piovium.org/api/data_code_analyzer_result}
     restart: unless-stopped
     shm_size: "2gb"
     environment:
       - HOSTNAME=localhost
+      - DATA_CODE_ANALYZER_RESULT_ENDPOINT=${DATA_CODE_ANALYZER_RESULT_ENDPOINT:-https://play.piovium.org/api/data_code_analyzer_result}

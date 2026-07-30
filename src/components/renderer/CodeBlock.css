@@ -1,0 +1,88 @@
+.code-block {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem 1.2rem;
+  border: 1px solid #30363d;
+  border-radius: 0.8rem;
+  background-color: #0d1117;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+  color: #c9d1d9;
+  text-align: left;
+}
+
+.character > .code-block {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.code-block-title {
+  margin-bottom: 0.65rem;
+  color: #8b949e;
+  font-family: "HYWH", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.code-block pre {
+  margin: 0;
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 2rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.code-block .token.comment,
+.code-block .token.prolog,
+.code-block .token.doctype,
+.code-block .token.cdata {
+  color: #8b949e;
+}
+
+.code-block .token.string,
+.code-block .token.char,
+.code-block .token.template-string {
+  color: #a5d6ff;
+}
+
+.code-block .token.keyword,
+.code-block .token.define-keyword,
+.code-block .token.atrule {
+  color: #ff7b72;
+}
+
+.code-block .token.boolean,
+.code-block .token.constant,
+.code-block .token.builtin {
+  color: #d2a8ff;
+}
+
+.code-block .token.number,
+.code-block .token.class-name,
+.code-block .token.function {
+  color: #79c0ff;
+}
+
+.code-block .token.operator,
+.code-block .token.punctuation {
+  color: #c9d1d9;
+}
+
+.dependency-code-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 1.5rem;
+}
+
+.dependency-code-section > .code-block {
+  margin-top: 0;
+}
+
+.dependency-code-title {
+  color: #716864;
+  font-size: 2.5rem;
+  line-height: 1;
+}

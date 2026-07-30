@@ -10,6 +10,7 @@ import { DebugBox, SkillBox } from "./SkillBox";
 import { CardFace } from "./CardFace";
 import { Tag } from "./Tag";
 import { Text } from "./Text";
+import { CodeBlock } from "./CodeBlock";
 import "./Character.css";
 
 export const Character = (props: { character: ParsedCharacter }) => {
@@ -88,6 +89,7 @@ export const Character = (props: { character: ParsedCharacter }) => {
       <Show when={debug() && character().debugChildren.length > 0}>
         <DebugBox children={character().debugChildren} />
       </Show>
+      <CodeBlock id={character().id} />
     </div>
   );
 };

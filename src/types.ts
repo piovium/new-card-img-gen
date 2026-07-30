@@ -7,6 +7,7 @@ import type {
   SkillRawData,
 } from "@gi-tcg/assets-manager";
 import type { Accessor } from "solid-js";
+import type { CodeAnalyzerResult } from "./codeAnalyzer";
 
 export interface AllRawData {
   keywords: KeywordRawData[];
@@ -44,6 +45,7 @@ export interface AppConfig {
   versionedActionCardSelection?: boolean[];
   debug?: boolean;
   includeTalent?: boolean;
+  codeAnalyzerResults?: CodeAnalyzerResult[];
 }
 
 export interface ParsedCharacter extends CharacterRawData {
@@ -102,6 +104,7 @@ export interface GlobalSettingsValue {
   displayId: Accessor<boolean>;
   displayStory: Accessor<boolean>;
   debug: Accessor<boolean>;
+  codeAnalyzerIndex: Accessor<ReadonlyMap<number, CodeAnalyzerResult>>;
 }
 
 export interface RenderContext {

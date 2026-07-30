@@ -10,6 +10,7 @@
   "scripts": {
     "check": "tsc -b --noEmit",
     "dev": "vite",
+    "test": "node --test tests/codeAnalyzer.test.ts tests/codeHighlight.test.ts",
     "build": "vite build",
     "preview": "vite preview",
     "start": "node scripts/server.ts"
@@ -20,6 +21,7 @@
     "@tanstack/solid-form": "^1.23.5",
     "daisyui": "^5.1.24",
     "modern-screenshot": "^4.6.6",
+    "prismjs": "^1.30.0",
     "remeda": "^2.32.0",
     "semver": "^7.7.3",
     "solid-js": "^1.9.12",
@@ -31,6 +33,7 @@
     "@hono/standard-validator": "^0.2.2",
     "@sinclair/typebox": "^0.34.49",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/prismjs": "^1.26.6",
     "@types/semver": "^7.7.1",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",

@@ -26,3 +26,12 @@ Your app is ready to be deployed!
 ## Deployment
 
 Learn more about deploying your application with the [documentations](https://vite.dev/guide/static-deploy.html)
+
+### Environment variables
+
+- `DATA_CODE_ANALYZER_RESULT_ENDPOINT` configures the `GET` endpoint used to
+  load implementation code in debug mode. It defaults to
+  `https://play.piovium.org/api/data_code_analyzer_result`.
+- Static deployments must set this variable when running `pnpm build`. The
+  supplied Docker Compose configuration forwards it to both the image build and
+  the renderer process.

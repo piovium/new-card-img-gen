@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare module "prismjs/components/prism-*.js";
+
 import { RenderAppOption } from "./App";
 
 declare module "solid-js" {

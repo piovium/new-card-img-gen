@@ -9,7 +9,12 @@ import { type } from "arktype";
 import { serve } from "@hono/node-server";
 import type {} from "../src/vite-env.d.ts";
 import type { AllRawData, OverrideContext, Version } from "../src/types.ts";
-import { ASSETS_API_ENDPOINT, getData } from "../src/shared.ts";
+import type { CodeAnalyzerResult } from "../src/codeAnalyzer.ts";
+import {
+  ASSETS_API_ENDPOINT,
+  getCodeAnalyzerResults,
+  getData,
+} from "../src/shared.ts";
 import { overrideData } from "../src/constants.ts";
 import { applyOverride } from "../src/override.ts";
 
@@ -37,6 +42,7 @@ const browser = process.env.CHROMIUM_BROWSER_URL
     });
 const page = await browser.newPage();
 await page.goto(address, { waitUntil: "domcontentloaded" });
+// @ts-expect-error DOM types
 await page.waitForFunction(() => typeof window.renderCardImage === "function");
 
 const Language = {
@@ -50,6 +56,7 @@ const RenderFormat = {
 } as const;
 
 const allData = new Map<string, AllRawData>();
+let cachedCodeAnalyzerResults: CodeAnalyzerResult[] | null = null;
 
 const inputSchema = type({
   id: "number",
@@ -76,6 +83,18 @@ const app = new Hono()
   .get('/health', (c) => c.text('ok'))
   .post("/render", sValidator("json", inputSchema), async ({ req }) => {
     const body = await req.json();
+    const warnings: string[] = [];
+    let codeAnalyzerResults: CodeAnalyzerResult[] | undefined;
+    if (body.debug) {
+      try {
+        cachedCodeAnalyzerResults ??= await getCodeAnalyzerResults();
+        codeAnalyzerResults = cachedCodeAnalyzerResults;
+      } catch (error) {
+        console.error(error);
+        const message = error instanceof Error ? error.message : String(error);
+        warnings.push(`实现代码加载失败，已跳过 Code 区块：${message}`);
+      }
+    }
     const language = body.language || Language.CHS;
     const version = body.version || "latest";
     const dataKey = `${version}-${language}`;
@@ -121,6 +140,7 @@ const app = new Hono()
       authorImageUrl:
         body.authorImageUrl ?? new URL("./vite.svg", address).href,
       debug: body.debug ?? false,
+      codeAnalyzerResults,
       render: {
         format: body.renderFormat,
         quality: body.renderQuality,
@@ -128,6 +148,7 @@ const app = new Hono()
     };
     return Response.json({
       success: true,
+      warnings,
       // @ts-expect-error DOM types
       url: await page.evaluate((opt) => window.renderCardImage(opt), opt),
     });

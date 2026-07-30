@@ -8,8 +8,14 @@ import type {
 } from "./types";
 import { defineOverride } from "./override.ts";
 
-// @ts-expect-error Node.js types
-export const BASE_URL = (import.meta.env?.BASE_URL || (typeof process !== "undefined" ? process.env.BASE_URL : "")) || "";
+type NodeGlobal = typeof globalThis & {
+  process?: { env?: { BASE_URL?: string } };
+};
+
+export const BASE_URL =
+  import.meta.env?.BASE_URL ||
+  (globalThis as NodeGlobal).process?.env?.BASE_URL ||
+  "";
 
 export const CHILDREN_CONFIG: Record<number, string> = {
   11154: "$[C111159],$[C111152],$[C111153],$[C111154],$[C111155]", // 爱可菲 P

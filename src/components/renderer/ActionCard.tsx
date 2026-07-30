@@ -7,6 +7,7 @@ import { CardFace } from "./CardFace";
 import { Children } from "./Children";
 import { Description } from "./Token";
 import { Text } from "./Text";
+import { CodeBlock } from "./CodeBlock";
 import "./ActionCard.css";
 
 export const ActionCard = (props: { card: ParsedActionCard }) => {
@@ -58,6 +59,7 @@ export const ActionCard = (props: { card: ParsedActionCard }) => {
         <Show when={allChildren().length > 0}>
           <Children children={allChildren()} />
         </Show>
+        <CodeBlock id={card().id} />
       </div>
       <CardFace
         item={card()}

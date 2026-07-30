@@ -6,6 +6,7 @@ import {
   type RenderContext,
   type ParsedCharacter,
   type ParsedActionCard,
+  type ParsedChild,
 } from "../../types";
 import { parseCharacter, parseActionCard } from "../../parser";
 import { RenderContextProvider } from "../../context";
@@ -19,6 +20,36 @@ import {
 } from "../../constants";
 import { PageTitle } from "./PageTitle";
 import { Watermark } from "./Watermark";
+import { CodeBlock } from "./CodeBlock";
+import {
+  collectDependencyCodeEntries,
+  type CodeAnalyzerResult,
+} from "../../codeAnalyzer";
+
+const collectChildIds = (child: ParsedChild, ids: number[]) => {
+  ids.push(child.id);
+  if ("children" in child) {
+    child.children.forEach((nestedChild) => collectChildIds(nestedChild, ids));
+  }
+};
+
+const collectVisibleCodeIds = (
+  character: ParsedCharacter | null,
+  actionCards: ParsedActionCard[],
+): number[] => {
+  const ids: number[] = [];
+  if (character) {
+    ids.push(character.id);
+    character.parsedSkills.forEach((skill) => collectChildIds(skill, ids));
+    character.debugChildren.forEach((child) => collectChildIds(child, ids));
+  }
+  for (const card of actionCards) {
+    ids.push(card.id);
+    card.children.forEach((child) => collectChildIds(child, ids));
+    card.debugChildren.forEach((child) => collectChildIds(child, ids));
+  }
+  return ids;
+};
 
 export const Renderer = (props: AppConfig) => {
   const renderingObjects = createMemo<RenderingObjects>(() => {
@@ -149,7 +180,25 @@ export const Renderer = (props: AppConfig) => {
         }[props.language];
       }
     }
-    return { mode, title, character, actionCards, versionText, renderContext };
+    const visibleCodeIds = props.debug
+      ? collectVisibleCodeIds(character, actionCards)
+      : [];
+    const dependencyCodeEntries = props.debug
+      ? collectDependencyCodeEntries(
+          visibleCodeIds,
+          props.codeAnalyzerResults,
+        )
+      : [];
+
+    return {
+      mode,
+      title,
+      character,
+      actionCards,
+      versionText,
+      renderContext,
+      dependencyCodeEntries,
+    };
   });
 
   interface RenderingObjects {
@@ -158,6 +207,7 @@ export const Renderer = (props: AppConfig) => {
     actionCards: ParsedActionCard[];
     versionText: string | null;
     renderContext: RenderContext;
+    dependencyCodeEntries: CodeAnalyzerResult[];
   }
 
   const getRenderContext = () => renderingObjects().renderContext;
@@ -190,6 +240,16 @@ export const Renderer = (props: AppConfig) => {
           {(ac) => <ActionCard card={ac} />}
         </For>
         <Show when={empty()}>无数据</Show>
+        <Show
+          when={props.debug && renderingObjects().dependencyCodeEntries.length > 0}
+        >
+          <section class="dependency-code-section">
+            <div class="dependency-code-title">Dependencies</div>
+            <For each={renderingObjects().dependencyCodeEntries}>
+              {(entry) => <CodeBlock id={entry.id} />}
+            </For>
+          </section>
+        </Show>
         <div class="version-layout">
           <div class="version-text">
             {props.authorName || renderingObjects().versionText}

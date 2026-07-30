@@ -11,6 +11,8 @@ RUN pnpm runtime set node 26 -g \
 
 WORKDIR /app
 COPY . .
+ARG DATA_CODE_ANALYZER_RESULT_ENDPOINT=https://play.piovium.org/api/data_code_analyzer_result
+ENV DATA_CODE_ANALYZER_RESULT_ENDPOINT=$DATA_CODE_ANALYZER_RESULT_ENDPOINT
 RUN pnpm install --frozen-lockfile && pnpm build
 
 ENV NODE_ENV=production \

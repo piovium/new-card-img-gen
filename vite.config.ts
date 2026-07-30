@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => {
   return {
     base,
     plugins: [solid(), tailwindcss()],
-    envPrefix: "ASSETS_API_ENDPOINT",
+    envPrefix: [
+      "ASSETS_API_ENDPOINT",
+      "DATA_CODE_ANALYZER_RESULT_ENDPOINT",
+    ],
   };
 });
