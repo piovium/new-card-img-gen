@@ -1,8 +1,8 @@
-import type { AllRawData, Language } from "./types";
+import type { AllRawData, Language } from "./types.ts";
 import {
   normalizeCodeAnalyzerResults,
   type CodeAnalyzerResult,
-} from "./codeAnalyzer";
+} from "./codeAnalyzer.ts";
 
 export const ASSETS_API_ENDPOINT = import.meta.env?.ASSETS_API_ENDPOINT || `https://static-data.piovium.org/api/v4`;
 // @ts-expect-error Node types
