@@ -67,6 +67,9 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   332032: "$[C332033],$[C332034],$[C332035]", // 幻戏倒计时
   333020: "$[C333021],$[C333022],$[C333023],$[C333024],$[C333025],$[C333026]", // 奇瑰之汤
   333027: "_", // 纵声欢唱
+  12171: "_",
+  12173: "$[C112171]",
+  12174: "$[K3001],$[K3009],$[K3010],$[C204],$[C205],$[C202],$[C211],$[C212]",
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
@@ -80,6 +83,7 @@ export const SHOWN_KEYWORDS = [
   3001, // 月感电
   // 3002, // 当前元素骰费用
   3009, // 月绽放
+  3010,
 ];
 
 export const COST_READONLY_ENTITIES = [
@@ -834,6 +838,47 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
+    
+    defineOverride<CharacterRawData>(null, null, {
+      id: 1217,
+      skills: [
+        {
+          id: 12171,
+          rawDescription: (before) => 
+             before.replace("\\n果", "\\n如果"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, null, {
+      id: 1217,
+      skills: [
+        {
+          id: 12172,
+          rawDescription: (before) =>
+            before.replace("召唤<color=#FFFFFFFF>$[C112162]</color>", "生成$[C112172]"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, null, {
+      id: 1217,
+      skills: [
+        {
+          id: 12173,
+          rawDescription: (before) =>
+            before.replace("召唤<color=#FFFFFFFF>$[C112161]</color>", "生成$[C112171]"),
+        },
+      ],
+    }),
+    defineOverride<CharacterRawData>(null, null, {
+      id: 1612,
+      skills: [
+        {
+          id: 16124,
+          rawDescription: (before) =>
+            before.replace("费用降低", "$[C202]"),
+        },
+      ],
+    }),
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
@@ -860,6 +905,11 @@ export const overrideData: OverrideData<AllRawData> = {
     //   id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
     //   buffIcon: "UI_Gcg_Buff_EffigyWater_S",
     // }),
+
+    defineOverride<EntityRawData>(null, null, {
+      id: 112171,
+      rawDescription: (before) => "<color=#FFFFFFFF>我方触发月感电时：</color>额外赋予敌方3张手牌<color=#FFFFFFFF>$[K3003]</color>，我方<color=#FFFFFFFF>$[C205]</color>造成的伤害改为3。\\n<color=#FFFFFFFF>我方触发月绽放时：</color>赋予<color=#FFFFFFFF>$[C202]</color>的手牌数改为3。\\n<color=#FFFFFFFF>我方触发月结晶反应时：</color>生成的<color=#FFFFFFFF>$[C211]</color>数量改为3。\\n<color=#FFFFFFFF>$[K3]：3</color>",
+    }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -877,6 +927,23 @@ export const overrideData: OverrideData<AllRawData> = {
     defineOverride<ActionCardRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
+    }),
+
+    defineOverride<ActionCardRawData>(null, null, {
+      id: 211,
+      rawDescription: (before) => before.replaceAll("<color=#FFFFFFFF>$[K3011]</color>", "<color=#FFFFFFFF>$[C212]</color>"),
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 216121,
+      rawDescription: (before) => before.replace("。。", "。"),
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 214022,
+      rawDescription: (before) => before.replace("$[A1403]", "$[A1402]"),
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 331012,
+      rawDescription: (before) => before.replace("$[C3003122]", "$[C303122]"),
     }),
   ],
 };
