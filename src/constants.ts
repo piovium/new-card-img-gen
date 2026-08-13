@@ -24,6 +24,9 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   12132: "$[C112131],$[C112132],$[C112133],$[C122]", // 希格雯 E
   12134: "$[C112101]", // 希格雯 P
   12142: "$[C112142],$[S1121422],$[C112143],$[C112141]", // 玛拉妮 E
+  12171: "_", // 哥伦比娅 A
+  12173: "$[C112171]", // 哥伦比娅 Q
+  12174: "$[K3001],$[K3009],$[K3010],$[C204],$[C205],$[C202],$[C211],$[C212]", // 哥伦比娅 P
   13141: "_", // 阿蕾奇诺 A
   13152:
     "$[C113151],$[C113154],$[S1131541],$[C113155],$[S1131551],$[C113156],$[S1131561],$[S13155]", // 玛薇卡 E
@@ -67,9 +70,6 @@ export const CHILDREN_CONFIG: Record<number, string> = {
   332032: "$[C332033],$[C332034],$[C332035]", // 幻戏倒计时
   333020: "$[C333021],$[C333022],$[C333023],$[C333024],$[C333025],$[C333026]", // 奇瑰之汤
   333027: "_", // 纵声欢唱
-  12171: "_",
-  12173: "$[C112171]",
-  12174: "$[K3001],$[K3009],$[K3010],$[C204],$[C205],$[C202],$[C211],$[C212]",
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
@@ -83,7 +83,7 @@ export const SHOWN_KEYWORDS = [
   3001, // 月感电
   // 3002, // 当前元素骰费用
   3009, // 月绽放
-  3010,
+  3010, // 月结晶
 ];
 
 export const COST_READONLY_ENTITIES = [
@@ -843,7 +843,7 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 1217,
       skills: [
         {
-          id: 12171,
+          id: 12171, // 哥伦比娅 A 文本错误 ###test###
           rawDescription: (before) => 
              before.replace("\\n果", "\\n如果"),
         },
@@ -853,7 +853,7 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 1217,
       skills: [
         {
-          id: 12172,
+          id: 12172, // 哥伦比娅 E 引用错误 ###test###
           rawDescription: (before) =>
             before.replace("召唤<color=#FFFFFFFF>$[C112162]</color>", "生成$[C112172]"),
         },
@@ -863,7 +863,7 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 1217,
       skills: [
         {
-          id: 12173,
+          id: 12173, // 哥伦比娅 Q 引用错误 ###test###
           rawDescription: (before) =>
             before.replace("召唤<color=#FFFFFFFF>$[C112161]</color>", "生成$[C112171]"),
         },
@@ -873,7 +873,7 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 1612,
       skills: [
         {
-          id: 16124,
+          id: 16124, // 叶洛亚 P 引用错误 ###test###
           rawDescription: (before) =>
             before.replace("费用降低", "$[C202]"),
         },
@@ -907,7 +907,7 @@ export const overrideData: OverrideData<AllRawData> = {
     // }),
 
     defineOverride<EntityRawData>(null, null, {
-      id: 112171,
+      id: 112171, // 哥伦比娅 月之领域 引用错误 ###test###
       rawDescription: (before) => "<color=#FFFFFFFF>我方触发月感电时：</color>额外赋予敌方3张手牌<color=#FFFFFFFF>$[K3003]</color>，我方<color=#FFFFFFFF>$[C205]</color>造成的伤害改为3。\\n<color=#FFFFFFFF>我方触发月绽放时：</color>赋予<color=#FFFFFFFF>$[C202]</color>的手牌数改为3。\\n<color=#FFFFFFFF>我方触发月结晶反应时：</color>生成的<color=#FFFFFFFF>$[C211]</color>数量改为3。\\n<color=#FFFFFFFF>$[K3]：3</color>",
     }),
   ],
@@ -930,20 +930,24 @@ export const overrideData: OverrideData<AllRawData> = {
     }),
 
     defineOverride<ActionCardRawData>(null, null, {
-      id: 211,
+      id: 211, // 月笼协奏 引用错误 ###test###
       rawDescription: (before) => before.replaceAll("<color=#FFFFFFFF>$[K3011]</color>", "<color=#FFFFFFFF>$[C212]</color>"),
     }),
     defineOverride<EntityRawData>(null, null, {
-      id: 216121,
+      id: 216121, // 叶洛亚天赋 标点错误 ###test###
       rawDescription: (before) => before.replace("。。", "。"),
     }),
     defineOverride<EntityRawData>(null, null, {
-      id: 214022,
+      id: 214022, // 雷泽魔导天赋 引用错误 ###test###
       rawDescription: (before) => before.replace("$[A1403]", "$[A1402]"),
     }),
     defineOverride<EntityRawData>(null, null, {
-      id: 331012,
+      id: 331012, // 超载幻变 引用错误 ###test###
       rawDescription: (before) => before.replace("$[C3003122]", "$[C303122]"),
+    }),
+    defineOverride<EntityRawData>(null, null, {
+      id: 212171, // 哥伦比娅天赋 引用错误 ###test###
+      rawDescription: (before) => before.replace("月笼", "$[C211]"),
     }),
   ],
 };
@@ -1154,4 +1158,5 @@ export const RELATED_ENTITIES: Record<number, number[]> = {
   212032: [212033], // 莫娜天赋 天步真原（生效中）
   215032: [215033], // 温迪天赋 颂时风若（生效中）
   332066: [303250], // 齐聚共饮（生效中）
+  330014: [300011, 300012], // 三月重临
 } as Record<number, number[]>;
