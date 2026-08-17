@@ -838,47 +838,6 @@ export const overrideData: OverrideData<AllRawData> = {
         },
       ],
     }),
-    
-    defineOverride<CharacterRawData>(null, null, {
-      id: 1217,
-      skills: [
-        {
-          id: 12171, // 哥伦比娅 A 文本错误 ###test###
-          rawDescription: (before) => 
-             before.replace("\\n果", "\\n如果"),
-        },
-      ],
-    }),
-    defineOverride<CharacterRawData>(null, null, {
-      id: 1217,
-      skills: [
-        {
-          id: 12172, // 哥伦比娅 E 引用错误 ###test###
-          rawDescription: (before) =>
-            before.replace("召唤<color=#FFFFFFFF>$[C112162]</color>", "生成$[C112172]"),
-        },
-      ],
-    }),
-    defineOverride<CharacterRawData>(null, null, {
-      id: 1217,
-      skills: [
-        {
-          id: 12173, // 哥伦比娅 Q 引用错误 ###test###
-          rawDescription: (before) =>
-            before.replace("召唤<color=#FFFFFFFF>$[C112161]</color>", "生成$[C112171]"),
-        },
-      ],
-    }),
-    defineOverride<CharacterRawData>(null, null, {
-      id: 1612,
-      skills: [
-        {
-          id: 16124, // 叶洛亚 P 引用错误 ###test###
-          rawDescription: (before) =>
-            before.replace("费用降低", "$[C202]"),
-        },
-      ],
-    }),
   ],
   entities: [
     defineOverride<EntityRawData>(null, null, {
@@ -905,11 +864,6 @@ export const overrideData: OverrideData<AllRawData> = {
     //   id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
     //   buffIcon: "UI_Gcg_Buff_EffigyWater_S",
     // }),
-
-    defineOverride<EntityRawData>(null, null, {
-      id: 112171, // 哥伦比娅 月之领域 引用错误 ###test###
-      rawDescription: (before) => "<color=#FFFFFFFF>我方触发月感电时：</color>额外赋予敌方3张手牌<color=#FFFFFFFF>$[K3003]</color>，我方<color=#FFFFFFFF>$[C205]</color>造成的伤害改为3。\\n<color=#FFFFFFFF>我方触发月绽放时：</color>赋予<color=#FFFFFFFF>$[C202]</color>的手牌数改为3。\\n<color=#FFFFFFFF>我方触发月结晶反应时：</color>生成的<color=#FFFFFFFF>$[C211]</color>数量改为3。\\n<color=#FFFFFFFF>$[K3]：3</color>",
-    }),
   ],
   actionCards: [
     defineOverride<ActionCardRawData>(null, null, {
@@ -928,23 +882,7 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-
-    defineOverride<ActionCardRawData>(null, null, {
-      id: 211, // 月笼协奏 引用错误 ###test###
-      rawDescription: (before) => before.replaceAll("<color=#FFFFFFFF>$[K3011]</color>", "<color=#FFFFFFFF>$[C212]</color>"),
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 216121, // 叶洛亚天赋 标点错误 ###test###
-      rawDescription: (before) => before.replace("。。", "。"),
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 214022, // 雷泽魔导天赋 引用错误 ###test###
-      rawDescription: (before) => before.replace("$[A1403]", "$[A1402]"),
-    }),
-    defineOverride<EntityRawData>(null, null, {
-      id: 331012, // 超载幻变 引用错误 ###test###
-      rawDescription: (before) => before.replace("$[C3003122]", "$[C303122]"),
-    }),
+    
     defineOverride<EntityRawData>(null, null, {
       id: 212171, // 哥伦比娅天赋 引用错误 ###test###
       rawDescription: (before) => before.replace("月笼", "$[C211]"),
@@ -1159,4 +1097,5 @@ export const RELATED_ENTITIES: Record<number, number[]> = {
   215032: [215033], // 温迪天赋 颂时风若（生效中）
   332066: [303250], // 齐聚共饮（生效中）
   330014: [300011, 300012], // 三月重临
+  212171: [112173], // 哥伦比娅 天赋
 } as Record<number, number[]>;
