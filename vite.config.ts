@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
       ],
     },
     envPrefix: [
-      "ASSETS_API_ENDPOINT",
+      "ASSETS_MANAGER_OPTIONS",
       "DATA_CODE_ANALYZER_RESULT_ENDPOINT",
     ],
   };

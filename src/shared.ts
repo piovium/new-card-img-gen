@@ -1,6 +1,7 @@
 import {
   AssetsManager,
   DEFAULT_ASSETS_API_ENDPOINT,
+  type AssetsManagerOption,
 } from "@gi-tcg/assets-manager";
 import type { AllRawData, Language, Version } from "./types.ts";
 import {
@@ -11,10 +12,14 @@ import {
 // @ts-expect-error Node types
 const runtimeEnv = globalThis.process?.env;
 
+export const ASSETS_MANAGER_OPTIONS = JSON.parse(
+  import.meta.env?.ASSETS_MANAGER_OPTIONS ||
+    runtimeEnv?.ASSETS_MANAGER_OPTIONS ||
+    "{}",
+) as Partial<AssetsManagerOption>;
+
 export const ASSETS_API_ENDPOINT =
-  import.meta.env?.ASSETS_API_ENDPOINT ||
-  runtimeEnv?.ASSETS_API_ENDPOINT ||
-  DEFAULT_ASSETS_API_ENDPOINT;
+  ASSETS_MANAGER_OPTIONS.apiEndpoint || DEFAULT_ASSETS_API_ENDPOINT;
 
 export const DATA_CODE_ANALYZER_RESULT_ENDPOINT =
   import.meta.env?.DATA_CODE_ANALYZER_RESULT_ENDPOINT ||
@@ -30,6 +35,7 @@ export const getAssetsManager = (version: Version, language: Language) => {
       apiEndpoint: ASSETS_API_ENDPOINT,
       version,
       language,
+      ...ASSETS_MANAGER_OPTIONS,
     });
     assetsManagers.set(language, manager);
   }
