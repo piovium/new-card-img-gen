@@ -6,13 +6,13 @@ import {
   type RenderContext,
   type ParsedCharacter,
   type ParsedActionCard,
-  type ParsedChild,
 } from "../../types";
 import { parseCharacter, parseActionCard } from "../../parser";
 import { RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import { BalanceAdjustment } from "./BalanceAdjustment";
+import { VersionDiffBlock, VersionDiffList } from "./VersionDiff";
 import "./Renderer.css";
 import {
   ELEMENT_TAG_TO_KEYWORD_ID,
@@ -25,13 +25,7 @@ import {
   collectDependencyCodeEntries,
   type CodeAnalyzerResult,
 } from "../../codeAnalyzer";
-
-const collectChildIds = (child: ParsedChild, ids: number[]) => {
-  ids.push(child.id);
-  if ("children" in child) {
-    child.children.forEach((nestedChild) => collectChildIds(nestedChild, ids));
-  }
-};
+import { collectChildIds } from "../../utils";;
 
 const collectVisibleCodeIds = (
   character: ParsedCharacter | null,
@@ -180,6 +174,12 @@ export const Renderer = (props: AppConfig) => {
         }[props.language];
       }
     }
+    if (props.mode === "versionDiff") {
+      title = {
+        CHS: "卡牌版本改动一览",
+        EN: "Card Changes Across Versions",
+      }[props.language];
+    }
     const visibleCodeIds = props.debug
       ? collectVisibleCodeIds(character, actionCards)
       : [];
@@ -214,7 +214,8 @@ export const Renderer = (props: AppConfig) => {
   const empty = () =>
     !renderingObjects().character &&
     renderingObjects().actionCards.length === 0 &&
-    props.mode !== "balanceAdjustment";
+    props.mode !== "balanceAdjustment" &&
+    props.mode !== "versionDiff";
 
   return (
     <RenderContextProvider value={getRenderContext}>
@@ -233,11 +234,30 @@ export const Renderer = (props: AppConfig) => {
         <Show when={props.mode === "balanceAdjustment" && props.adjustments}>
           <BalanceAdjustment adjustments={props.adjustments || []} />
         </Show>
+        <Show when={props.mode === "versionDiff"}>
+          <VersionDiffList />
+        </Show>
         <Show when={renderingObjects().character}>
-          {(c) => <Character character={c()} />}
+          {(c) => (
+            <>
+              <Character character={c()} />
+              <Show when={props.mode === "character" && props.displayDiff}>
+                <VersionDiffBlock item={c()} />
+              </Show>
+            </>
+          )}
         </Show>
         <For each={renderingObjects().actionCards}>
-          {(ac) => <ActionCard card={ac} />}
+          {(ac) => (
+            <>
+              <ActionCard card={ac} />
+              <Show
+                when={props.mode === "singleActionCard" && props.displayDiff}
+              >
+                <VersionDiffBlock item={ac} />
+              </Show>
+            </>
+          )}
         </For>
         <Show when={empty()}>无数据</Show>
         <Show

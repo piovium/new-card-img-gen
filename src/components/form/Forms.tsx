@@ -117,7 +117,8 @@ export type GenerationMode =
   | "character"
   | "singleActionCard"
   | "versionedActionCards"
-  | "balanceAdjustment";
+  | "balanceAdjustment"
+  | "versionDiff";
 
 export interface FormValue {
   general: {
@@ -132,6 +133,7 @@ export interface FormValue {
     cardbackImage: string;
     displayId: boolean;
     displayStory: boolean;
+    displayDiff: boolean;
     watermarkText: string;
     debug: boolean;
     includeTalent: boolean;

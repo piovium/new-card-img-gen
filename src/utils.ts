@@ -65,3 +65,10 @@ export const parseId = (id: string | number): number | null => {
   const num = Number(id);
   return isNaN(num) ? null : num;
 };
+
+export const collectChildIds = (child: ParsedChild, ids: number[]) => {
+  ids.push(child.id);
+  if ("children" in child) {
+    child.children.forEach((nestedChild) => collectChildIds(nestedChild, ids));
+  }
+};

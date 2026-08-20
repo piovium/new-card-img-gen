@@ -112,6 +112,7 @@ export const GeneralConfigTab = withForm({
                 { value: "singleActionCard", label: "行动卡" },
                 { value: "versionedActionCards", label: "版本新增行动卡" },
                 { value: "balanceAdjustment", label: "平衡性调整" },
+                { value: "versionDiff", label: "版本改动" },
               ]}
             />
           )}
@@ -259,6 +260,27 @@ export const GeneralConfigTab = withForm({
         <form.AppField name="general.debug">
           {(field) => (
             <field.ToggleField class="self-center" id="general.debug" />
+          )}
+        </form.AppField>
+
+        <label
+          class="fieldset-legend"
+          classList={{
+            hidden: !isCharacterMode() && !isSingleActionCardMode(),
+          }}
+          for="general.displayDiff"
+        >
+          显示版本改动
+        </label>
+        <form.AppField name="general.displayDiff">
+          {(field) => (
+            <field.ToggleField
+              class="self-center"
+              classList={{
+                hidden: !isCharacterMode() && !isSingleActionCardMode(),
+              }}
+              id="general.displayDiff"
+            />
           )}
         </form.AppField>
       </div>

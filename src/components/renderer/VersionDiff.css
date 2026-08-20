@@ -1,0 +1,119 @@
+.version-diff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.version-diff-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 1.5rem;
+  padding: 1.5rem 2rem;
+  background-color: var(--box-bg-color);
+  border: 1px solid #b4967e;
+  border-radius: 1.8rem;
+  box-sizing: border-box;
+  overflow: clip;
+}
+
+.version-diff-image {
+  width: 8rem;
+  height: 8rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.version-diff-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.version-diff-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.version-diff-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.version-diff-name {
+  font-size: 3rem;
+  line-height: 1.2;
+  color: #716864;
+  white-space: nowrap;
+}
+
+.version-diff-version {
+  flex-shrink: 0;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  color: #aa8d76;
+  white-space: nowrap;
+}
+
+.version-diff-divider {
+  border-top: solid 2px black;
+  border-image-source: repeating-linear-gradient(
+    to right,
+    #e6e1d4 0,
+    #e6e1d4 14px,
+    transparent 14px,
+    transparent 20px
+  );
+  border-image-slice: 1;
+}
+
+.version-diff-remark {
+  font-size: 2.25rem;
+  line-height: 1.4;
+  color: #9d918c;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.version-diff-remark[data-justify] {
+  text-align: justify;
+}
+
+.version-diff-item[data-variant="annotation"] {
+  background: linear-gradient(90deg, #A46DAC 0%, #5579AC 100%);
+  border-color: #ffffff;
+  border-radius: 9999px;
+}
+
+.version-diff-item[data-variant="annotation"] .version-diff-name {
+  color: #f1f1e7;
+}
+
+.version-diff-item[data-variant="annotation"] .version-diff-version {
+  color: #ffdd55;
+  margin-right: 4rem;
+}
+
+.version-diff-item[data-variant="annotation"] .version-diff-divider {
+  border-image-source: repeating-linear-gradient(
+    to right,
+    #d3ccb8 0,
+    #d3ccb8 14px,
+    transparent 14px,
+    transparent 20px
+  );
+}
+
+.version-diff-item[data-variant="annotation"] .version-diff-remark {
+  color: #dadac8;
+}

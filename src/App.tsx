@@ -86,6 +86,7 @@ const INITIAL_FORM_VALUE: FormValue = {
     cardbackImage: "UI_Gcg_CardBack_NodKrai",
     displayId: true,
     displayStory: true,
+    displayDiff: true,
     mirroredLayout: false,
     watermarkText: "",
     debug: false,

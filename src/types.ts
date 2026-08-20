@@ -28,7 +28,8 @@ export interface AppConfig {
     | "character"
     | "singleActionCard"
     | "versionedActionCards"
-    | "balanceAdjustment";
+    | "balanceAdjustment"
+    | "versionDiff";
   characterId?: number;
   actionCardId?: number;
   version: Version;
@@ -40,6 +41,7 @@ export interface AppConfig {
   cardbackImage: string;
   displayId?: boolean;
   displayStory?: boolean;
+  displayDiff?: boolean;
   watermarkText?: string;
   adjustments?: AdjustmentData[];
   versionedActionCardSelection?: boolean[];
