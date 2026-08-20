@@ -16,6 +16,8 @@
     "start": "node scripts/server.ts"
   },
   "dependencies": {
+    "@gi-tcg/assets-manager": "^0.20.7",
+    "@gi-tcg/typings": "^0.20.7",
     "@solid-primitives/storage": "^4.3.3",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/solid-form": "^1.23.5",
@@ -28,7 +30,6 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@gi-tcg/assets-manager": "^0.19.1",
     "@hono/node-server": "^2.0.2",
     "@hono/standard-validator": "^0.2.2",
     "@sinclair/typebox": "^0.34.49",
