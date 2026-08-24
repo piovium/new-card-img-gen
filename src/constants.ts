@@ -882,11 +882,6 @@ export const overrideData: OverrideData<AllRawData> = {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-    
-    defineOverride<EntityRawData>(null, null, {
-      id: 212171, // 哥伦比娅天赋 引用错误 ###test###
-      rawDescription: (before) => before.replace("月笼", "$[C211]"),
-    }),
   ],
 };
 
