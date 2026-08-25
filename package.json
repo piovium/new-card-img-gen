@@ -16,8 +16,8 @@
     "start": "node scripts/server.ts"
   },
   "dependencies": {
-    "@gi-tcg/assets-manager": "^0.20.7",
-    "@gi-tcg/typings": "^0.20.7",
+    "@gi-tcg/assets-manager": "^0.20.8",
+    "@gi-tcg/typings": "^0.20.8",
     "@solid-primitives/storage": "^4.3.3",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/solid-form": "^1.23.5",

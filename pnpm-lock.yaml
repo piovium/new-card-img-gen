@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@gi-tcg/assets-manager':
-        specifier: ^0.20.7
-        version: 0.20.7
+        specifier: ^0.20.8
+        version: 0.20.8
       '@gi-tcg/typings':
-        specifier: ^0.20.7
-        version: 0.20.7
+        specifier: ^0.20.8
+        version: 0.20.8
       '@solid-primitives/storage':
         specifier: ^4.3.3
         version: 4.3.3(solid-js@1.9.12)
@@ -372,11 +372,11 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@gi-tcg/assets-manager@0.20.7':
-    resolution: {integrity: sha512-akgrPMKkvVBu3uOs/D1aoaiBeWg0FWoOV4zs7AJyfFG//LOSHh2Bd8/cpE2jHJPMHJaOnq7aWHlWdKndXg4KjA==}
+  '@gi-tcg/assets-manager@0.20.8':
+    resolution: {integrity: sha512-YT0TByhqF9FznGvQVan9BXVsFpM6k57FwnPPWbgtL5UnX97277ozhoLphb+jKIhjlXzCLI+JwWICgtfL3BLLlw==}
 
-  '@gi-tcg/typings@0.20.7':
-    resolution: {integrity: sha512-c9+Dof2OqeDiUhhTk//K6kGOwbiQ64qED/z6IWfCyxEf/mYVhWnRSFrIYd0dIwISaWjmYC0NVnFQ2b9ACdXMhg==}
+  '@gi-tcg/typings@0.20.8':
+    resolution: {integrity: sha512-1e8RWnb0/wTxyXDjsKJn5sgp8ZL3Zjv9CA4iqz6JkNzW+CNpihOqsvCtYUJZpo+f4LFq+aC76mtXyXVl2nNChA==}
 
   '@hono/node-server@2.0.2':
     resolution: {integrity: sha512-tXlTi1h/4V7sDe7i97IVP+9re9ZU7wXZZggnR5ucCRclf1+AX6YhGStrR5w8bLj+3Mlyl0pKfBh9gqTqqnGKfQ==}
@@ -2183,12 +2183,12 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@gi-tcg/assets-manager@0.20.7':
+  '@gi-tcg/assets-manager@0.20.8':
     dependencies:
-      '@gi-tcg/typings': 0.20.7
+      '@gi-tcg/typings': 0.20.8
       p-limit: 7.3.0
 
-  '@gi-tcg/typings@0.20.7':
+  '@gi-tcg/typings@0.20.8':
     dependencies:
       '@bufbuild/protobuf': 2.12.0
       execa: 9.6.1
