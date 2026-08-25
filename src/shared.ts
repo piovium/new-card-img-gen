@@ -58,7 +58,20 @@ const getCategory = async <C extends keyof CategoryData>(
   } catch {
     const categoryData = await manager.getCategory(category, { force: true });
     return (await Promise.all(
-      categoryData.map(({ id }) => manager.getData(id)),
+      categoryData.map(({ id }) =>
+        manager.getData(id).then(async (datum) => {
+          if ("skills" in datum) {
+            return {
+              ...datum,
+              skills: await Promise.all(
+                datum.skills.map((skill) => manager.getData(skill.id)),
+              ),
+            };
+          } else {
+            return datum;
+          }
+        }),
+      ),
     )) as CategoryData[C];
   }
 };
