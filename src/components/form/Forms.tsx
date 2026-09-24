@@ -84,23 +84,14 @@ export interface NewSkillData {
   iconUrl?: string;
 }
 
-export interface NewActionCardData {
-  type: string; // TODO: better typing
-  id: number;
-  name: string;
-  tags: string[]; // TODO: better typing
-  relatedCharacterId: number | null;
-  rawDescription: string;
-  playCost: PlayCost[];
-  cardFaceUrl: string;
-}
-
 export interface NewEntityData {
   id: number;
   type: string; // TODO: better typing
   name: string;
   tags: string[]; // TODO: better typing
-  skills: []; // TODO: how to handle techniques?
+  skills: NewSkillData[];
+  playCost: PlayCost[];
+  relatedCharacterId?: number | null;
   rawDescription: string;
   buffIcon?: string;
   buffIconUrl?: string;
@@ -138,7 +129,6 @@ export interface FormValue {
   };
   newItems: {
     characters: NewCharacterData[];
-    actionCards: NewActionCardData[];
     entities: NewEntityData[];
     keywords: NewKeywordData[];
   };

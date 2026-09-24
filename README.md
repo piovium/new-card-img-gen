@@ -33,7 +33,7 @@ Learn more about deploying your application with the [documentations](https://vi
   load implementation code in debug mode. It defaults to
   `https://play.piovium.org/api/data_code_analyzer_result`.
 - `ASSETS_MANAGER_OPTIONS` accepts a JSON object whose properties are passed to
-  `AssetsManager`. These properties override the built-in endpoint, version,
+  `AssetsManager`. These properties override the built-in base URL, version,
   and language options when their keys overlap. It defaults to `{}`.
 - For static deployments, configure these variables when running `pnpm build`.
   The supplied Docker Compose configuration forwards them to both the image

@@ -1,3 +1,4 @@
+import { getVersionedActionCards, isActionCard } from "../../cardData";
 import { createMemo, Show } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useMainFormContext, type GenerationMode } from "./Forms";
@@ -16,7 +17,9 @@ export const GeneralConfigTab = withForm({
     const names = createMemo(() => {
       const data = allData();
       return new Map(
-        [...data.characters, ...data.actionCards].map((v) => [v.id, v.name]),
+        [...data.characters, ...data.entities.filter(isActionCard)].map(
+          (v) => [v.id, v.name],
+        ),
       );
     });
 
@@ -49,15 +52,11 @@ export const GeneralConfigTab = withForm({
 
     const versionedActionCards = createMemo(() => {
       if (currentVersion().startsWith("v")) {
-        const collected = allData()
-          .actionCards.filter(
-            (ac) =>
-              ac.sinceVersion === currentVersion() &&
-              (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-              (includeTalent() ||
-                !ac.tags.includes("GCG_TAG_TALENT")),
-          )
-          .map((ac) => ac.name);
+        const collected = getVersionedActionCards(
+          allData().entities,
+          currentVersion(),
+          includeTalent(),
+        ).map((ac) => ac.name);
         return collected;
       } else {
         return [];

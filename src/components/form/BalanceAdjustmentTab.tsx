@@ -9,6 +9,7 @@ import { pseudoMainFormOption, withForm } from "./shared";
 import type { AllRawData, AdjustmentData, PlayCost } from "../../types";
 import { useGlobalSettings } from "../../context";
 import { getData } from "../../shared";
+import { isActionCard } from "../../cardData";
 import { parseId } from "../../utils";
 import {
   ADJUSTMENT_SUBJECT_LABELS,
@@ -23,9 +24,6 @@ import {
 
 const findDescriptionById = (data: AllRawData, id: number): string | null => {
   const descriptionMap = new Map<number, string | null>([
-    ...data.actionCards.map(
-      (card) => [card.id, card.description ?? null] as const,
-    ),
     ...data.entities.flatMap((entity) => [
       [entity.id, entity.description ?? null] as const,
       ...entity.skills.map(
@@ -53,7 +51,9 @@ const findHpById = (data: AllRawData, id: number): number | null => {
 
 const findPlayCostById = (data: AllRawData, id: number): PlayCost[] | null => {
   const playCostEntries: readonly (readonly [number, PlayCost[]])[] = [
-    ...data.actionCards.map((card) => [card.id, card.playCost] as const),
+    ...data.entities
+      .filter(isActionCard)
+      .map((card) => [card.id, card.playCost] as const),
     ...data.characters.flatMap((character) =>
       character.skills.map((skill) => [skill.id, skill.playCost] as const),
     ),
@@ -510,7 +510,7 @@ export const BalanceAdjustmentTab = withForm({
     const names = createMemo(() => {
       const data = allData();
       return new Map(
-        [...data.characters, ...data.actionCards].map((v) => [v.id, v.name]),
+        [...data.characters, ...data.entities].map((v) => [v.id, v.name]),
       );
     });
 

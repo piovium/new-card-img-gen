@@ -2,7 +2,7 @@
 
 declare module "prismjs/components/prism-*.js";
 
-import { RenderAppOption } from "./App";
+import type { RenderAppOption } from "./types";
 
 declare module "solid-js" {
   namespace JSX {
@@ -38,10 +38,6 @@ declare module "@gi-tcg/assets-manager" {
   interface EntityRawData {
     cardFaceUrl?: string;
     buffIconUrl?: string;
-  }
-
-  interface ActionCardRawData {
-    cardFaceUrl?: string;
   }
 }
 

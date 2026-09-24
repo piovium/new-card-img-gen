@@ -1,10 +1,6 @@
+import { hasDisplayCost } from "../../cardData";
 import { For, Show } from "solid-js";
-import type {
-  ParsedChild,
-  ParsedActionCard,
-  ParsedEntity,
-  ParsedKeyword,
-} from "../../types";
+import type { ParsedChild } from "../../types";
 import { useGlobalSettings, useRenderContext } from "../../context";
 import { KeywordIcon } from "./KeywordIcon";
 import { KeywordTag } from "./KeywordTag";
@@ -33,7 +29,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
           const preparing = renderContext().prepareSkillToEntityMap.get(
             child.id,
           );
-          const costWidth = child.playCost
+          const costWidth = hasDisplayCost(child) && child.playCost
             ? Math.min(child.playCost.length, 1)
             : 0;
           return (
@@ -97,7 +93,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                     </div>
                   </div>
                 </div>
-                <Show when={child.playCost}>
+                <Show when={hasDisplayCost(child)}>
                   <Cost
                     type="keyword"
                     cost={
@@ -114,12 +110,7 @@ export const Children = (props: { children: ParsedChild[] }) => {
                   class={`keyword-description`}
                   data-justify={["CHS", "CHT"].includes(language())}
                 >
-                  <Description
-                    description={
-                      (child as ParsedActionCard | ParsedEntity | ParsedKeyword)
-                        .parsedDescription
-                    }
-                  />
+                  <Description description={child.parsedDescription} />
                 </div>
                 <CodeBlock id={child.id} />
               </div>

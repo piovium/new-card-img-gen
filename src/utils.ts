@@ -1,15 +1,14 @@
 import type { Accessor } from "solid-js";
-import { BASE_URL, TYPE_TAG_IMG_NAME_MAP } from "./constants";
+import { BASE_URL, TYPE_TAG_IMG_NAME_MAP } from "./constants.ts";
 import type { AllUnionFields } from "type-fest";
 import type {
-  ActionCardRawData,
   CharacterRawData,
   EntityRawData,
   KeywordRawData,
   ParsedChild,
   SkillRawData,
 } from "./types";
-import { ASSETS_API_ENDPOINT } from "./shared";
+import { STATIC_DATA_API_ENDPOINT } from "./shared.ts";
 
 export const tagImageUrl = (tag: string) =>
   tag.startsWith("GCG_TAG_ELEMENT_")
@@ -20,7 +19,7 @@ export const tagImageUrl = (tag: string) =>
         TYPE_TAG_IMG_NAME_MAP[tag]
       }.png`;
 export const assetsImageUrl = (imageName: string) =>
-  `${ASSETS_API_ENDPOINT}/image/raw/${imageName}`;
+  `${STATIC_DATA_API_ENDPOINT}/image/raw/${imageName}`;
 
 export type AnyChild = AllUnionFields<ParsedChild>;
 
@@ -28,7 +27,6 @@ type AnyRawChild =
   | CharacterRawData
   | SkillRawData
   | EntityRawData
-  | ActionCardRawData
   | KeywordRawData;
 export const iconUrl = (itemArg: AnyRawChild | AllUnionFields<AnyRawChild>) => {
   const item = itemArg as AllUnionFields<AnyRawChild>;

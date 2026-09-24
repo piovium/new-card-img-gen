@@ -2,7 +2,7 @@ import { createServer } from "vite";
 import puppeteer from "puppeteer-core";
 import path from "node:path";
 import exitHook from "exit-hook";
-import type { RenderAppOption } from "../src/App.tsx";
+import type { RenderAppOption } from "../src/types.ts";
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import { type } from "arktype";
@@ -11,7 +11,7 @@ import type {} from "../src/vite-env.d.ts";
 import type { AllRawData, OverrideContext, Version } from "../src/types.ts";
 import type { CodeAnalyzerResult } from "../src/codeAnalyzer.ts";
 import {
-  ASSETS_API_ENDPOINT,
+  getMetadata,
   getCodeAnalyzerResults,
   getData,
 } from "../src/shared.ts";
@@ -98,22 +98,16 @@ const app = new Hono()
     const language = body.language || Language.CHS;
     const version = body.version || "latest";
     const dataKey = `${version}-${language}`;
-    const versionList = await fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(
-      async (r) =>
-        r.ok
-          ? ((await r.json()) as { availableVersions: Version[] })
-              .availableVersions
-          : Promise.reject(new Error(await r.text())),
-    );
+    const metadata = await getMetadata();
     if (!allData.has(dataKey)) {
       const data = await getData(version, language);
       const betaVersion = "v9999.0.0" as Version;
-      const latestVersion = versionList.at(-1) ?? betaVersion;
+      const latestVersion = metadata.latestVersion;
       const overrideContext: OverrideContext = {
         version:
           version === "latest"
             ? latestVersion
-            : version.endsWith("-beta")
+            : version === "beta" || version.endsWith("-beta")
               ? betaVersion
               : (version as Version),
         language: language,

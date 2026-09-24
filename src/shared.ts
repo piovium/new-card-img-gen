@@ -1,6 +1,6 @@
 import {
   AssetsManager,
-  DEFAULT_ASSETS_API_ENDPOINT,
+  DEFAULT_STATIC_DATA_API_BASE_URL,
   type AssetsManagerOption,
 } from "@gi-tcg/assets-manager";
 import type { AllRawData, Language, Version } from "./types.ts";
@@ -9,8 +9,11 @@ import {
   type CodeAnalyzerResult,
 } from "./codeAnalyzer.ts";
 
-// @ts-expect-error Node types
-const runtimeEnv = globalThis.process?.env;
+const runtimeEnv = (
+  globalThis as typeof globalThis & {
+    process?: { env?: Record<string, string | undefined> };
+  }
+).process?.env;
 
 export const ASSETS_MANAGER_OPTIONS = JSON.parse(
   import.meta.env?.ASSETS_MANAGER_OPTIONS ||
@@ -18,8 +21,10 @@ export const ASSETS_MANAGER_OPTIONS = JSON.parse(
     "{}",
 ) as Partial<AssetsManagerOption>;
 
-export const ASSETS_API_ENDPOINT =
-  ASSETS_MANAGER_OPTIONS.apiEndpoint || DEFAULT_ASSETS_API_ENDPOINT;
+export const STATIC_DATA_API_BASE_URL =
+  ASSETS_MANAGER_OPTIONS.apiBaseUrl || DEFAULT_STATIC_DATA_API_BASE_URL;
+export const STATIC_DATA_API_ENDPOINT =
+  `${STATIC_DATA_API_BASE_URL.replace(/\/+$/, "")}/api/v5`;
 
 export const DATA_CODE_ANALYZER_RESULT_ENDPOINT =
   import.meta.env?.DATA_CODE_ANALYZER_RESULT_ENDPOINT ||
@@ -30,21 +35,21 @@ const assetsManagers = new Map<string, AssetsManager>();
 
 type CategoryData = {
   characters: AllRawData["characters"];
-  action_cards: AllRawData["actionCards"];
   entities: AllRawData["entities"];
   keywords: AllRawData["keywords"];
 };
 
 export const getAssetsManager = (version: Version, language: Language) => {
-  let manager = assetsManagers.get(`${version}.${language}`);
+  const key = `${version}.${language}`;
+  let manager = assetsManagers.get(key);
   if (!manager) {
     manager = new AssetsManager({
-      apiEndpoint: ASSETS_API_ENDPOINT,
+      apiBaseUrl: STATIC_DATA_API_BASE_URL,
       version,
       language,
       ...ASSETS_MANAGER_OPTIONS,
     });
-    assetsManagers.set(language, manager);
+    assetsManagers.set(key, manager);
   }
   return manager;
 };
@@ -81,13 +86,23 @@ export const getData = async (
   language: Language,
 ): Promise<AllRawData> => {
   const manager = getAssetsManager(version, language);
-  const [characters, actionCards, entities, keywords] = await Promise.all([
+  const [characters, entities, keywords] = await Promise.all([
     getCategory(manager, "characters"),
-    getCategory(manager, "action_cards"),
     getCategory(manager, "entities"),
     getCategory(manager, "keywords"),
   ]);
-  return { characters, actionCards, entities, keywords };
+  return { characters, entities, keywords };
+};
+
+export interface StaticDataMetadata {
+  latestVersion: Version;
+  availableVersions: Version[];
+}
+
+export const getMetadata = async (): Promise<StaticDataMetadata> => {
+  const response = await fetch(`${STATIC_DATA_API_ENDPOINT}/metadata`);
+  if (!response.ok) throw new Error(await response.text());
+  return response.json() as Promise<StaticDataMetadata>;
 };
 
 export const getCodeAnalyzerResults = async (): Promise<

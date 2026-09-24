@@ -8,13 +8,12 @@ import {
 import { TYPE_TAG_TEXT_MAP } from "../../../constants";
 import type { Language } from "../../../types";
 import { PlayCostSubForm } from "./PlayCostSubForm";
-import type { SelectOption } from "../fields/SelectField";
 
 interface ActionCardSubFormProps {
   language: Language;
   subForm: SubForm<
     typeof pseudoMainFormOption,
-    `newItems.actionCards[${number}]`
+    `newItems.entities[${number}]`
   >;
 }
 
