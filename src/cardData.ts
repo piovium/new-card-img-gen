@@ -12,9 +12,8 @@ export const getVersionedActionCards = (
 ): EntityRawData[] =>
   entities.filter(
     (entry) =>
-      isActionCard(entry) &&
       entry.sinceVersion === version &&
-      (entry.shareId != null ||
+      (entry.shareId !== null ||
         entry.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
       (includeTalent || !entry.tags.includes("GCG_TAG_TALENT")),
   );

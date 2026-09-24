@@ -12,7 +12,7 @@ import {
   parseCharacter,
   parseActionCard,
 } from "../../parser";
-import { getVersionedActionCards, isActionCard } from "../../cardData";
+import { getVersionedActionCards } from "../../cardData";
 import { RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
@@ -59,7 +59,6 @@ export const Renderer = (props: AppConfig) => {
     const data = props.data;
     const version = props.version;
     const renderContext = createRenderContext(data, language);
-    const availableActionCards = data.entities.filter(isActionCard);
 
     let character: ParsedCharacter | null = null;
     const actionCards: ParsedActionCard[] = [];
@@ -67,7 +66,7 @@ export const Renderer = (props: AppConfig) => {
       const collected = data.characters.find((c) => c.id === props.characterId);
       if (collected) {
         character = parseCharacter(renderContext, collected);
-        const talents = availableActionCards.filter(
+        const talents = data.entities.filter(
           (ac) => ac.relatedCharacterId === collected.id,
         );
         actionCards.push(
@@ -75,9 +74,7 @@ export const Renderer = (props: AppConfig) => {
         );
       }
     } else if (mode === "singleActionCard") {
-      const actionCard = availableActionCards.find(
-        (c) => c.id === props.actionCardId,
-      );
+      const actionCard = data.entities.find((c) => c.id === props.actionCardId);
       if (actionCard) {
         actionCards.push(parseActionCard(renderContext, actionCard));
       }
@@ -128,10 +125,7 @@ export const Renderer = (props: AppConfig) => {
       ? collectVisibleCodeIds(character, actionCards)
       : [];
     const dependencyCodeEntries = props.debug
-      ? collectDependencyCodeEntries(
-          visibleCodeIds,
-          props.codeAnalyzerResults,
-        )
+      ? collectDependencyCodeEntries(visibleCodeIds, props.codeAnalyzerResults)
       : [];
 
     return {
@@ -185,7 +179,9 @@ export const Renderer = (props: AppConfig) => {
         </For>
         <Show when={empty()}>无数据</Show>
         <Show
-          when={props.debug && renderingObjects().dependencyCodeEntries.length > 0}
+          when={
+            props.debug && renderingObjects().dependencyCodeEntries.length > 0
+          }
         >
           <section class="dependency-code-section">
             <div class="dependency-code-title">Dependencies</div>

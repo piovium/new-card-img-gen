@@ -1,4 +1,4 @@
-import { getVersionedActionCards, isActionCard } from "../../cardData";
+import { getVersionedActionCards } from "../../cardData";
 import { createMemo, Show } from "solid-js";
 import { useGlobalSettings } from "../../context";
 import { useMainFormContext, type GenerationMode } from "./Forms";
@@ -17,9 +17,7 @@ export const GeneralConfigTab = withForm({
     const names = createMemo(() => {
       const data = allData();
       return new Map(
-        [...data.characters, ...data.entities.filter(isActionCard)].map(
-          (v) => [v.id, v.name],
-        ),
+        [...data.characters, ...data.entities].map((v) => [v.id, v.name]),
       );
     });
 
@@ -190,7 +188,9 @@ export const GeneralConfigTab = withForm({
         </label>
         <form.AppField name="general.cardbackImage">
           {/* TODO: select */}
-          {(field) => <field.TextField id="general.cardbackImage" class="w-full" />}
+          {(field) => (
+            <field.TextField id="general.cardbackImage" class="w-full" />
+          )}
         </form.AppField>
 
         <span class="fieldset-legend">语言</span>
@@ -209,14 +209,18 @@ export const GeneralConfigTab = withForm({
           左下附注
         </label>
         <form.AppField name="general.authorName">
-          {(field) => <field.TextField id="general.authorName" class="w-full" />}
+          {(field) => (
+            <field.TextField id="general.authorName" class="w-full" />
+          )}
         </form.AppField>
 
         <label class="fieldset-legend" for="general.watermarkText">
           水印文本
         </label>
         <form.AppField name="general.watermarkText">
-          {(field) => <field.TextField id="general.watermarkText" class="w-full" />}
+          {(field) => (
+            <field.TextField id="general.watermarkText" class="w-full" />
+          )}
         </form.AppField>
 
         <label class="fieldset-legend" for="general.authorImageUrl">
