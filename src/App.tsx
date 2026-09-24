@@ -10,30 +10,22 @@ import {
   type AllRawData,
   type Version,
   VERSION_REGEX,
-  type SkillRawData,
   type OverrideContext,
+  type RenderAppOption,
+  type RenderConfig,
 } from "./types";
 import { GlobalSettings } from "./context";
 import "./App.css";
 import { Renderer } from "./components/renderer/Renderer";
-import {
-  Forms,
-  type FormValue,
-  type NewSkillData,
-} from "./components/form/Forms";
+import { Forms, type FormValue } from "./components/form/Forms";
 import { Portal } from "solid-js/web";
 import { domToBlob } from "modern-screenshot";
 import {
-  MOCK_NEW_ACTION_CARDS,
   MOCK_NEW_CHARACTERS,
   MOCK_NEW_ENTITIES,
   MOCK_NEW_KEYWORDS,
-} from "./mock_data";
-import {
-  ASSETS_API_ENDPOINT,
-  getCodeAnalyzerResults,
-  getData,
-} from "./shared";
+} from "./mockData";
+import { getMetadata, getCodeAnalyzerResults, getData } from "./shared";
 import { applyOverride } from "./override";
 import { BASE_URL, overrideData } from "./constants";
 import { makePersisted } from "@solid-primitives/storage";
@@ -42,20 +34,11 @@ import {
   indexCodeAnalyzerResults,
   type CodeAnalyzerResult,
 } from "./codeAnalyzer";
-
-export interface RenderConfig {
-  format?: "png" | "jpeg" | "webp";
-  quality?: number;
-}
-
-export interface RenderAppOption extends AppConfig {
-  render?: RenderConfig;
-}
+import { getNewItemData } from "./formData";
 
 const EMPTY_DATA: AllRawData = {
   keywords: [],
   characters: [],
-  actionCards: [],
   entities: [],
 };
 
@@ -63,13 +46,14 @@ const search = new URLSearchParams(window.location.search);
 
 let versionFromUrl = search.get("version") || undefined;
 if (versionFromUrl && !VERSION_REGEX.test(versionFromUrl)) {
-  alert("URL 中的 version 参数格式错误，应为 vX.Y.Z 或 latest");
+  alert(
+    "URL 中的 version 参数格式错误，应为 vX.Y.Z（可带版本后缀）、latest 或 beta",
+  );
   versionFromUrl = "latest";
 }
 
 const INITIAL_NEW_ITEMS: FormValue["newItems"] = {
   characters: MOCK_NEW_CHARACTERS,
-  actionCards: MOCK_NEW_ACTION_CARDS,
   entities: MOCK_NEW_ENTITIES,
   keywords: MOCK_NEW_KEYWORDS,
 };
@@ -130,18 +114,8 @@ const getInitialFormValue = (): FormValue => {
 
 export const App = () => {
   const [config, setConfig] = createSignal<AppConfig>();
-  const [versionList] = createResource<Version[]>(
-    () => {
-      return fetch(`${ASSETS_API_ENDPOINT}/metadata`).then(async (r) =>
-        r.ok
-          ? (await r.json()).availableVersions
-          : Promise.reject(new Error(await r.text())),
-      );
-    },
-    {
-      initialValue: [],
-    },
-  );
+  const [metadata] = createResource(getMetadata);
+  const versionList = () => metadata()?.availableVersions ?? [];
   const initialFormValue = getInitialFormValue();
   const [loading, setLoading] = createSignal(false);
   const [codeAnalyzerWarning, setCodeAnalyzerWarning] = createSignal<string>();
@@ -159,7 +133,6 @@ export const App = () => {
       ...newFormValue,
       newItems: {
         characters: [],
-        actionCards: [],
         entities: [],
         keywords: [],
       },
@@ -216,14 +189,14 @@ export const App = () => {
       remoteFetched.data = remoteData;
 
       const betaVersion = "v9999.0.0" as Version;
-      const latestVersion = versionList().at(-1) ?? betaVersion;
+      const latestVersion = metadata()?.latestVersion ?? betaVersion;
       const overrideContext: OverrideContext = {
         version:
           newVersion === "latest"
             ? latestVersion
-            : newVersion.endsWith("-beta")
-            ? betaVersion
-            : newVersion,
+            : newVersion === "beta" || newVersion.endsWith("-beta")
+              ? betaVersion
+              : newVersion,
         language: newLanguage,
       };
       // override data
@@ -233,63 +206,15 @@ export const App = () => {
         overrideContext,
       );
 
-      const skillMapper = (newSkill: NewSkillData): SkillRawData => ({
-        ...newSkill,
-        hidden: false,
-        // we wont use these
-        englishName: "",
-        description: "",
-        targetList: [],
-      });
-      for (const newCh of newFormValue.newItems.characters || []) {
-        data.characters.push({
-          ...newCh,
-          tags: [newCh.elementTag, newCh.weaponTag, ...newCh.tags],
-          skills: newCh.skills.map(skillMapper),
-          // we wont use these
-          obtainable: false,
-          englishName: "",
-          cardFace: "",
-          icon: "",
-        });
-      }
-      for (const newEt of newFormValue.newItems.entities || []) {
-        data.entities.push({
-          ...newEt,
-          skills: newEt.skills.map(skillMapper),
-          // we wont use these
-          description: "",
-          englishName: "",
-          hidden: false,
-          remainAfterDie: false,
-        });
-      }
-      for (const newAc of newFormValue.newItems.actionCards || []) {
-        data.actionCards.push({
-          ...newAc,
-          // we wont use these
-          obtainable: false,
-          englishName: "",
-          description: "",
-          cardFace: "",
-          targetList: [],
-          relatedCharacterTags: [],
-        });
-      }
-      for (const newK of newFormValue.newItems.keywords || []) {
-        data.keywords.push({
-          ...newK,
-          // we wont use these
-          rawName: "",
-          description: "",
-        });
-      }
+      const newItems = getNewItemData(newFormValue.newItems);
+      data.characters.push(...newItems.characters);
+      data.entities.push(...newItems.entities);
+      data.keywords.push(...newItems.keywords);
       setConfig({
         data,
         ...newFormValue.general,
         adjustments: newFormValue.adjustments,
-        versionedActionCardSelection:
-          newFormValue.versionedActionCardSelection,
+        versionedActionCardSelection: newFormValue.versionedActionCardSelection,
         codeAnalyzerResults,
       });
       setMobilePreviewing(true);
@@ -425,7 +350,7 @@ export const App = () => {
           </Show>
           <Forms
             initialValue={initialFormValue}
-            versionList={versionList.state === "ready" ? versionList() : []}
+            versionList={metadata.state === "ready" ? versionList() : []}
             loading={loading()}
             onSubmit={onSubmitForm}
           />

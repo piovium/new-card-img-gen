@@ -1,7 +1,6 @@
 import type {
   NewCharacterData,
   NewEntityData,
-  NewActionCardData,
   NewKeywordData,
 } from "./components/form/Forms";
 
@@ -44,7 +43,7 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
             count: 3,
           },
         ],
-        iconUrl: "https://static-data.7shengzhaohuan.online/api/v4/image/raw/Skill_E_Diona_01_HD",
+        icon: "Skill_E_Diona_01_HD",
       },
       {
         id: 95013,
@@ -62,7 +61,7 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
             count: 3,
           },
         ],
-        iconUrl: "https://static-data.7shengzhaohuan.online/api/v4/image/raw/MonsterSkill_S_EffigyElectric_04",
+        icon: "MonsterSkill_S_EffigyElectric_04",
       },
     ],
     elementTag: "GCG_TAG_ELEMENT_ANEMO",
@@ -71,7 +70,7 @@ export const MOCK_NEW_CHARACTERS: NewCharacterData[] = [
   },
 ];
 
-export const MOCK_NEW_ACTION_CARDS: NewActionCardData[] = [
+export const MOCK_NEW_ENTITIES: NewEntityData[] = [
   {
     id: 295011,
     type: "GCG_CARD_MODIFY",
@@ -82,16 +81,15 @@ export const MOCK_NEW_ACTION_CARDS: NewActionCardData[] = [
     rawDescription:
       "$[K2]：装备给我方的<color=#FFFFFFFF>$[A9501]</color>。装备有此牌的$[A9501]释放$[S95013]时会播放后搬腿动画。\\n（牌组中包含$[A9501]，才能加入牌组）\n",
     relatedCharacterId: 9501,
+    skills: [],
   },
-];
-
-export const MOCK_NEW_ENTITIES: NewEntityData[] = [
   {
     id: 195011,
     type: "GCG_CARD_ONSTAGE",
     name: "结算bug",
     tags: [],
     skills: [],
+    playCost: [],
     rawDescription:
       "本回合中，我方角色造成的伤害随机+1~3。\\n<color=#FFFFFFFF>$[K3]：2</color>",
     buffIcon: "UI_Gcg_Buff_Common_Special",
@@ -102,6 +100,7 @@ export const MOCK_NEW_ENTITIES: NewEntityData[] = [
     name: "雨酱的白丝",
     tags: [],
     skills: [],
+    playCost: [],
     rawDescription:
       "<color=#FFFFFFFF>结束阶段：</color>造成2点$[K105]，随机交换1张双方原本元素骰费用最多的手牌。\\n<color=#FFFFFFFF>$[K3]：2</color>\\n\\n<color=#FFFFFFFF>我方角色或召唤物引发扩散反应后：</color>转换此牌的元素类型，改为造成被扩散的元素类型的伤害。（离场前仅限一次）",
     cardFaceUrl:

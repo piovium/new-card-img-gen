@@ -2,7 +2,6 @@ import type {
   Language,
   CharacterRawData,
   EntityRawData,
-  ActionCardRawData,
   OverrideData,
   AllRawData,
 } from "./types";
@@ -867,21 +866,19 @@ export const overrideData: OverrideData<AllRawData> = {
     //   id: 122081, // 无相之水 水晶核心 包里有专门图标非要用common ###非官方### ###可能会在未来修复###
     //   buffIcon: "UI_Gcg_Buff_EffigyWater_S",
     // }),
-  ],
-  actionCards: [
-    defineOverride<ActionCardRawData>(null, null, {
+    defineOverride<EntityRawData>(null, null, {
       id: 212111, // 芙宁娜天赋 修复引用错误
       rawDescription: (before) => before.replace("$[S12123]", "$[S12112]"),
     }),
-    defineOverride<ActionCardRawData>(null, "CHS", {
+    defineOverride<EntityRawData>(null, "CHS", {
       id: 321032, // 沉玉谷 修正一处标点样式 ###可能会在未来修复###
       rawDescription: (before) => before.replace("</color>：", "：</color>"),
     }),
-    defineOverride<ActionCardRawData>(null, null, {
+    defineOverride<EntityRawData>(null, null, {
       id: 111161, // 丝柯克 诸武相授 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),
-    defineOverride<ActionCardRawData>(null, null, {
+    defineOverride<EntityRawData>(null, null, {
       id: 111163, // 丝柯克 虚境裂隙 增加蛇之狡谋图标 ###非官方###
       rawDescription: delicateSerpentsSubtlety,
     }),

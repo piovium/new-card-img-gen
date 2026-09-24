@@ -3,30 +3,99 @@ import {
   BOLD_COLOR,
   CHILDREN_CONFIG,
   DAMAGE_KEYWORD_MAP,
+  ELEMENT_TAG_TO_KEYWORD_ID,
   KEYWORD_COLORS,
   RELATED_ENTITIES,
   SHOWN_KEYWORDS,
-} from "./constants";
+} from "./constants.ts";
 import type {
   DescriptionToken,
   ParsedDescription,
   ParsedChild,
   ParsedSkill,
   SkillRawData,
-  ActionCardRawData,
   ParsedCharacter,
   CharacterRawData,
   RenderContext,
+  EntityRawData,
+  AllRawData,
+  Language,
 } from "./types";
+
+export const createRenderContext = (
+  data: AllRawData,
+  language: Language,
+): RenderContext => {
+  const keywords = data.keywords;
+  const skills = [...data.characters, ...data.entities].flatMap(
+    (e) => e.skills,
+  );
+  const genericEntities = data.entities;
+  const names = new Map<number, string>(
+    [...genericEntities, ...data.characters, ...skills].map(
+      (e) => [e.id, e.name] as const,
+    ),
+  );
+  const characterToElementKeywordIdMap = new Map(
+    data.characters.flatMap((ch) =>
+      [ch.id, ...ch.skills.map((sk) => sk.id)].map((id) => [
+        id,
+        ch.tags.map((t) => ELEMENT_TAG_TO_KEYWORD_ID[t]).find((kId) => kId) ??
+          310,
+      ]),
+    ),
+  );
+  // 官方的 Entity 引用其它 Entity 时会使用 K 而非 C/S，这里记录它们的关系以映射
+  const keywordToEntityMap = new Map(
+    keywords
+      .filter((k) => k.name && k.id < -1000)
+      .map((k) => {
+        const match = [...skills, ...data.entities].find(
+          (e) => e.name === k.name,
+        );
+        return match ? ([-k.id, match] as const) : null;
+      })
+      .filter((pair) => !!pair),
+  );
+  const prepareSkillToEntityMap = new Map(
+    data.entities
+      .filter((e) => e.tags.includes("GCG_TAG_PREPARE_SKILL"))
+      .flatMap((entity) => {
+        const matches = [
+          ...entity.rawDescription.matchAll(/\$\[S(\d{5}|\d{7})\]/g),
+        ];
+        return matches.map((m) => [parseInt(m[1], 10), entity]);
+      }),
+  );
+  return {
+    language,
+    skills,
+    genericEntities,
+    keywords,
+    names,
+    supIds: [],
+    characterToElementKeywordIdMap,
+    keywordToEntityMap,
+    prepareSkillToEntityMap,
+  };
+};
 
 interface ChildLikeBase {
   id: number;
   rawDescription: string;
-  keyMap?: Record<string, string>;
+  rawDynamicDescription?: string | null;
+  rawPlayingDescription?: string | null;
+  keyMap?: Record<string, string> | null;
   tags?: string[];
   skills?: SkillRawData[];
-  buffIcon?: string;
+  buffIcon?: string | null;
 }
+
+const rawDescriptionOf = (entry: ChildLikeBase): string =>
+  entry.rawDescription ||
+  entry.rawDynamicDescription ||
+  entry.rawPlayingDescription ||
+  "";
 
 // 颜色规范
 // remapColors 是纯工具函数，不依赖 Solid 响应式系统
@@ -155,7 +224,7 @@ export const parseDescription = (
         const refType = ref[0];
         const selectors = ref.substring(1).split("|");
         if (selectors.length > 2) {
-          console.warn(`Tcg description ${ref} has extra pipes`);          
+          console.warn(`Tcg description ${ref} has extra pipes`);
         }
         selector = selectors[1];
         if (selector === "nc") selector = undefined;
@@ -192,7 +261,9 @@ export const parseDescription = (
         }
       }
       if (usingKeywordId !== null) {
-        const keyword = ctx.keywords.find((e) => e.id === usingKeywordId);
+        // K references use positive numbers; API keyword records use negative IDs.
+        const keywordId = -usingKeywordId;
+        const keyword = ctx.keywords.find((e) => e.id === keywordId);
         if (keyword) {
           const rawNameSplit = keyword.rawName.split("|");
           let rawName: string = rawNameSplit[0];
@@ -234,7 +305,7 @@ export const parseDescription = (
       const id2 = parts[1];
       const count = parts[2];
       const keywordId = Number(id2);
-      const { name } = ctx.keywords.find((e) => e.id === keywordId) ?? {
+      const { name } = ctx.keywords.find((e) => e.id === -keywordId) ?? {
         name: "",
       };
       result.push({ type: "boxedKeyword", text: `${name}：${count}` });
@@ -255,8 +326,8 @@ export const appendChildren = (
 ): ParsedChild[] => {
   const parsedDescription = parseDescription(
     ctx,
-    childData.rawDescription,
-    "keyMap" in childData ? childData.keyMap : {},
+    rawDescriptionOf(childData),
+    childData.keyMap ?? {},
   );
   const result: ParsedChild[] = [];
   if (scope !== "children") {
@@ -273,8 +344,7 @@ export const appendChildren = (
       let moveBuffIcon = false;
       for (const skill of childData.skills) {
         if (skill.type === "GCG_SKILL_TAG_VEHICLE") {
-          (skill as unknown as { buffIcon?: string }).buffIcon =
-            childData.buffIcon;
+          (skill as { buffIcon?: string | null }).buffIcon = childData.buffIcon;
           moveBuffIcon = true;
         }
       }
@@ -301,20 +371,10 @@ export const appendChildren = (
           break;
         }
         case "C": {
-          const entityDataMerged = ctx.genericEntities
-            .filter((e) => e.id === child.id)
-            .reduce<
-              Record<string, unknown>
-            >((acc, e) => ({ ...acc, ...e }), {});
-          if (!("id" in entityDataMerged)) continue;
-          // entityDataMerged now behaves as ChildLikeBase
-          result.push(
-            ...appendChildren(
-              ctx,
-              entityDataMerged as unknown as ChildLikeBase,
-              subScope,
-            ),
-          );
+          const entity = ctx.genericEntities.find((e) => e.id === child.id);
+          if (entity) {
+            result.push(...appendChildren(ctx, entity, subScope));
+          }
           break;
         }
         case "A": {
@@ -327,7 +387,7 @@ export const appendChildren = (
     ) {
       if (ctx.supIds.includes(-child.id)) continue;
       ctx.supIds.push(-child.id);
-      const keywordData = ctx.keywords.find((e) => e.id === child.id);
+      const keywordData = ctx.keywords.find((e) => e.id === -child.id);
       if (keywordData) {
         result.push({
           ...keywordData,
@@ -347,7 +407,7 @@ export const parseCharacterSkill = (
   const parsedDescription = parseDescription(
     ctx,
     skill.rawDescription,
-    skill.keyMap,
+    skill.keyMap ?? {},
     true,
   );
   const children = appendChildren(ctx, skill, "children");
@@ -387,12 +447,9 @@ export const parseCharacter = (
   } as ParsedCharacter;
 };
 
-export const parseActionCard = (
-  ctx: RenderContext,
-  data: ActionCardRawData,
-) => {
+export const parseActionCard = (ctx: RenderContext, data: EntityRawData) => {
   ctx.supIds.push(data.id);
-  let description = data.rawDescription;
+  let description = rawDescriptionOf(data);
   if (data.tags.includes("GCG_TAG_ADVENTURE_PLACE")) {
     description += `\\n${ADVENTURE_PLACE_ADDITIONAL_DESC[ctx.language]}`;
   }

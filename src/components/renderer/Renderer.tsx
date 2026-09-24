@@ -1,6 +1,5 @@
-import { createSignal, createMemo } from "solid-js";
+import { createMemo } from "solid-js";
 import { For, Show } from "solid-js";
-import type { SkillRawData } from "@gi-tcg/assets-manager";
 import {
   type AppConfig,
   type RenderContext,
@@ -8,16 +7,18 @@ import {
   type ParsedActionCard,
   type ParsedChild,
 } from "../../types";
-import { parseCharacter, parseActionCard } from "../../parser";
+import {
+  createRenderContext,
+  parseCharacter,
+  parseActionCard,
+} from "../../parser";
+import { getVersionedActionCards } from "../../cardData";
 import { RenderContextProvider } from "../../context";
 import { Character } from "./Character";
 import { ActionCard } from "./ActionCard";
 import { BalanceAdjustment } from "./BalanceAdjustment";
 import "./Renderer.css";
-import {
-  ELEMENT_TAG_TO_KEYWORD_ID,
-  VERSION_REPLACE_STRS,
-} from "../../constants";
+import { VERSION_REPLACE_STRS } from "../../constants";
 import { PageTitle } from "./PageTitle";
 import { Watermark } from "./Watermark";
 import { CodeBlock } from "./CodeBlock";
@@ -57,59 +58,7 @@ export const Renderer = (props: AppConfig) => {
     const mode = props.mode;
     const data = props.data;
     const version = props.version;
-    const keywords = data.keywords.map((k) => ({ ...k, id: -k.id }));
-    const skills = [...data.characters, ...data.entities].flatMap(
-      (e) => e.skills as SkillRawData[],
-    );
-    const genericEntities = [...data.actionCards, ...data.entities];
-    const names = new Map<number, string>(
-      [...genericEntities, ...data.characters, ...skills].map(
-        (e) => [e.id, e.name] as const,
-      ),
-    );
-    const characterToElementKeywordIdMap = new Map(
-      data.characters.flatMap((ch) =>
-        [ch.id, ...ch.skills.map((sk) => sk.id)].map((id) => [
-          id,
-          ch.tags.map((t) => ELEMENT_TAG_TO_KEYWORD_ID[t]).find((kId) => kId) ??
-            310,
-        ]),
-      ),
-    );
-    // 官方的 Entity 引用其它 Entity 时会使用 K 而非 C/S，这里记录它们的关系以映射
-    const keywordToEntityMap = new Map(
-      keywords
-        .filter((k) => k.name && k.id > 1000)
-        .map((k) => {
-          const match = [...skills, ...data.entities, ...data.actionCards].find(
-            (e) => e.name === k.name,
-            // && !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
-          );
-          return match ? ([k.id, match] as const) : null;
-        })
-        .filter((pair) => !!pair),
-    );
-    const prepareSkillToEntityMap = new Map(
-      data.entities
-        .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"))
-        .flatMap((entity) => {
-          const matches = [
-            ...entity.rawDescription.matchAll(/\$\[S(\d{5}|\d{7})\]/g),
-          ];
-          return matches.map((m) => [parseInt(m[1], 10), entity]);
-        }),
-    );
-    const renderContext: RenderContext = {
-      language,
-      skills,
-      genericEntities,
-      keywords,
-      names,
-      supIds: [],
-      characterToElementKeywordIdMap,
-      keywordToEntityMap,
-      prepareSkillToEntityMap,
-    };
+    const renderContext = createRenderContext(data, language);
 
     let character: ParsedCharacter | null = null;
     const actionCards: ParsedActionCard[] = [];
@@ -117,33 +66,25 @@ export const Renderer = (props: AppConfig) => {
       const collected = data.characters.find((c) => c.id === props.characterId);
       if (collected) {
         character = parseCharacter(renderContext, collected);
-        const talents = data.actionCards.filter(
+        const talents = data.entities.filter(
           (ac) => ac.relatedCharacterId === collected.id,
         );
-        console.log(talents);
         actionCards.push(
           ...talents.map((card) => parseActionCard(renderContext, card)),
         );
       }
     } else if (mode === "singleActionCard") {
-      const actionCard = data.actionCards.find(
-        (c) => c.id === props.actionCardId,
-      );
+      const actionCard = data.entities.find((c) => c.id === props.actionCardId);
       if (actionCard) {
         actionCards.push(parseActionCard(renderContext, actionCard));
       }
     } else if (mode === "versionedActionCards") {
       if (version.startsWith("v")) {
-        const collected = data.actionCards
-          .filter(
-            (ac) =>
-              ac.sinceVersion === version &&
-              (ac.shareId || ac.tags.includes("GCG_TAG_ADVENTURE_PLACE")) &&
-              (props.includeTalent || !ac.tags.includes("GCG_TAG_TALENT")),
-          )
-          .filter(
-            (_, idx) => props.versionedActionCardSelection?.[idx] ?? true,
-          );
+        const collected = getVersionedActionCards(
+          data.entities,
+          version,
+          props.includeTalent,
+        ).filter((_, idx) => props.versionedActionCardSelection?.[idx] ?? true);
         actionCards.push(
           ...collected.map((c) => parseActionCard(renderContext, c)),
         );
@@ -184,10 +125,7 @@ export const Renderer = (props: AppConfig) => {
       ? collectVisibleCodeIds(character, actionCards)
       : [];
     const dependencyCodeEntries = props.debug
-      ? collectDependencyCodeEntries(
-          visibleCodeIds,
-          props.codeAnalyzerResults,
-        )
+      ? collectDependencyCodeEntries(visibleCodeIds, props.codeAnalyzerResults)
       : [];
 
     return {
@@ -241,7 +179,9 @@ export const Renderer = (props: AppConfig) => {
         </For>
         <Show when={empty()}>无数据</Show>
         <Show
-          when={props.debug && renderingObjects().dependencyCodeEntries.length > 0}
+          when={
+            props.debug && renderingObjects().dependencyCodeEntries.length > 0
+          }
         >
           <section class="dependency-code-section">
             <div class="dependency-code-title">Dependencies</div>

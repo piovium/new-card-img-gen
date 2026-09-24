@@ -127,7 +127,6 @@ const AdjustmentRecordItem = (props: AdjustmentRecordProps) => {
     return new Map(
       [
         ...data.characters,
-        ...data.actionCards,
         ...data.entities,
         ...data.characters.flatMap((c) => c.skills),
         ...data.entities.flatMap((e) => e.skills),
@@ -231,11 +230,11 @@ export const BalanceAdjustment = (props: BalanceAdjustmentProps) => {
           cardFace: character.cardFace,
         };
       }
-      const actionCard = data.actionCards.find((c) => c.id === parsedId);
+      const actionCard = data.entities.find((c) => c.id === parsedId);
       if (actionCard) {
         return {
           name: actionCard.name,
-          cardFace: actionCard.cardFace,
+          cardFace: actionCard.cardFace ?? undefined,
         };
       }
       return null;

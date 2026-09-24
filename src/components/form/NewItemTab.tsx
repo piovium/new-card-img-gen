@@ -1,4 +1,5 @@
-import { createSignal, createUniqueId, Index, Show } from "solid-js";
+import { isActionCard } from "../../cardData";
+import { createSignal, createUniqueId, For, Index, Show } from "solid-js";
 import { pseudoMainFormOption, withForm } from "./shared";
 import { CharacterSkillSubForm } from "./subforms/CharacterSkillSubForm";
 import { CharacterBasicSubForm } from "./subforms/CharacterBasicSubForm";
@@ -14,8 +15,11 @@ export const NewItemsTab = withForm({
     const newCharacters = form.useStore(
       (state) => state.values.newItems.characters,
     );
-    const newActionCards = form.useStore(
-      (state) => state.values.newItems.actionCards,
+    const newActionCardIndices = form.useStore(
+      (state) =>
+        state.values.newItems.entities.flatMap((entity, index) =>
+          isActionCard(entity) ? [index] : [],
+        ),
     );
 
     const [viewingTab, setViewingTab] = createSignal<number | "extra" | null>(
@@ -65,28 +69,24 @@ export const NewItemsTab = withForm({
             <li>
               <h2 class="menu-title">新行动卡</h2>
             </li>
-            <Index each={newActionCards()}>
-              {(_, idx) => (
-                <li>
-                  <button
-                    type="button"
-                    classList={{
-                      "menu-active":
-                        viewingTab() ===
-                        form.getFieldValue(`newItems.actionCards[${idx}].id`),
-                    }}
-                    onClick={() =>
-                      setViewingTab(
-                        form.getFieldValue(`newItems.actionCards[${idx}].id`) ??
-                          null,
-                      )
-                    }
-                  >
-                    {form.getFieldValue(`newItems.actionCards[${idx}].name`)}
-                  </button>
-                </li>
-              )}
-            </Index>
+            <For each={newActionCardIndices()}>
+              {(idx) => {
+                const card = form.useStore(
+                  (state) => state.values.newItems.entities[idx],
+                );
+                return (
+                  <li>
+                    <button
+                      type="button"
+                      classList={{ "menu-active": viewingTab() === card()?.id }}
+                      onClick={() => setViewingTab(card()?.id ?? null)}
+                    >
+                      {card()?.name}
+                    </button>
+                  </li>
+                );
+              }}
+            </For>
             <li class="flex-grow invisible" />
             <li class="menu-title">
               <hr />
@@ -257,13 +257,13 @@ export const NewItemsTab = withForm({
               }}
             </Index>
 
-            <Index each={newActionCards()}>
-              {(_, idx) => {
+            <For each={newActionCardIndices()}>
+              {(idx) => {
                 const id = form.useStore(
-                  (state) => state.values.newItems.actionCards[idx].id,
+                  (state) => state.values.newItems.entities[idx].id,
                 );
                 const name = form.useStore(
-                  (state) => state.values.newItems.actionCards[idx].name,
+                  (state) => state.values.newItems.entities[idx].name,
                 );
                 return (
                   <div
@@ -287,7 +287,7 @@ export const NewItemsTab = withForm({
                       <ActionCardSubForm
                         subForm={{
                           form,
-                          prefix: `newItems.actionCards[${idx}]`,
+                          prefix: `newItems.entities[${idx}]`,
                         }}
                         language={language()}
                       />
@@ -295,7 +295,7 @@ export const NewItemsTab = withForm({
                   </div>
                 );
               }}
-            </Index>
+            </For>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ export interface CostFieldProps {
   subForm: SubForm<
     typeof pseudoMainFormOption,
     | `newItems.characters[${number}].skills[${number}].playCost`
-    | `newItems.actionCards[${number}].playCost`
+    | `newItems.entities[${number}].playCost`
   >;
 }
 
